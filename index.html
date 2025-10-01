@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Old Testament Timeline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(to bottom, #1a1a2e, #16213e, #0f3460);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 100px 20px 80px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('header-bg.webp') center/cover no-repeat;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #f39c12;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.6);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #f39c12, #e67e22, #d35400);
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
+        }
+
+        .timeline-event {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 15px;
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border: 3px solid #f39c12;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-event:hover .timeline-dot {
+            transform: translateX(-50%) scale(1.4);
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.8);
+        }
+
+        .timeline-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            width: fit-content;
+            max-width: max-content;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .timeline-event.expanded .timeline-card {
+            width: 380px;
+            max-width: 380px;
+        }
+
+        .timeline-event.left {
+            text-align: right;
+            padding-right: calc(50% + 30px);
+            padding-left: 20px;
+        }
+
+        .timeline-event.right {
+            text-align: left;
+            padding-left: calc(50% + 30px);
+            padding-right: 20px;
+        }
+
+        .timeline-event.left .timeline-card {
+            text-align: right;
+        }
+
+        .timeline-event.right .timeline-card {
+            text-align: left;
+        }
+
+        .timeline-event:hover .timeline-card {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            background: #fff;
+        }
+
+        /* Arrows pointing to center of dot - fixed position */
+        .timeline-event.left .timeline-card::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 14px;
+            border-style: solid;
+            border-width: 8px 0 8px 10px;
+            border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+        }
+
+        .timeline-event.right .timeline-card::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 14px;
+            border-style: solid;
+            border-width: 8px 10px 8px 0;
+            border-color: transparent rgba(255, 255, 255, 0.95) transparent transparent;
+        }
+
+        .event-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-event.left .event-header {
+            justify-content: flex-end;
+        }
+
+        .timeline-event.right .event-header {
+            justify-content: flex-start;
+        }
+
+        .event-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .event-date {
+            background: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .event-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            width: 0;
+        }
+
+        .timeline-event.expanded .event-details {
+            max-height: none;
+            opacity: 1;
+            margin-top: 10px;
+            width: auto;
+        }
+
+        .event-image {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .event-date {
+            display: block;
+            background: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .event-reference {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            font-style: italic;
+        }
+
+        .event-description {
+            color: #555;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        /* Spacing classes for different time gaps */
+        .spacing-tight {
+            margin-bottom: -15px;
+        }
+
+        .spacing-close {
+            margin-bottom: 5px;
+        }
+
+        .spacing-normal {
+            margin-bottom: 25px;
+        }
+
+        .spacing-medium {
+            margin-bottom: 45px;
+        }
+
+        .spacing-large {
+            margin-bottom: 80px;
+        }
+
+        .era-marker {
+            text-align: center;
+            margin: 40px auto;
+            padding: 12px 30px;
+            background: rgba(243, 156, 18, 0.2);
+            border: 2px solid #f39c12;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #f39c12;
+            max-width: 300px;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            background: #f39c12;
+            color: #fff;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .timeline-event.left,
+            .timeline-event.right {
+                padding-left: 40px;
+                padding-right: 20px;
+                text-align: left;
+            }
+
+            .timeline-event.left .timeline-card,
+            .timeline-event.right .timeline-card {
+                width: auto;
+                text-align: left;
+            }
+
+            .timeline-event.expanded .timeline-card {
+                width: calc(100% - 60px);
+            }
+
+            .timeline-event.left .timeline-card::after,
+            .timeline-event.right .timeline-card::before {
+                display: none;
+            }
+
+            .event-header {
+                justify-content: flex-start !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <h1>Old Testament Timeline</h1>
+            <p>Journey Through Sacred History</p>
+            <p style="margin-top: 8px; opacity: 0.9;">By Benjamin Tweedy</p>
+            <p style="margin-top: 20px; font-size: 0.95rem; opacity: 0.85;">Click on any event to expand and learn more</p>
+        </div>
+
+        <div class="container">
+            <div class="timeline">
+                <div class="timeline-line"></div>
+
+                <div v-for="(event, index) in events" :key="index"
+                     :class="['timeline-event', index % 2 === 0 ? 'left' : 'right', getSpacingClass(index), { expanded: expandedEvents.includes(index) }]">
+                    
+                    <div class="timeline-dot"></div>
+                    
+                    <div class="timeline-card" @click="toggleExpand(index)">
+                        <div class="event-header">
+                            <div class="event-title">{{ event.title }}</div>
+                        </div>
+                        <div class="event-details">
+                            <img v-if="event.image" :src="event.image" :alt="event.title" class="event-image">
+                            <span class="event-date">{{ event.date }}</span>
+                            <p class="event-reference">📖 {{ event.reference }}</p>
+                            <p class="event-description">{{ event.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" @click="expandAll" title="Expand/Collapse All">
+                {{ allExpanded ? '−' : '+' }}
+            </button>
+            <button class="control-btn" @click="scrollToTop" title="Back to Top">↑</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                expandedEvents: [],
+                allExpanded: false,
+                events: [
+                    { year: -4000, date: '~4000 BC', title: 'Creation', reference: 'Genesis 1-2', description: 'God creates the heavens and the earth. Creation culminated in the creation of Man.', image: 'https://assets.answersingenesis.org/img/cms/content/contentnode/header_image/days-of-creation-updated.jpg' },
+                    { year: -3999, date: 'Shortly After', title: 'The Fall', reference: 'Genesis 3', description: 'Adam and Eve disobey God by eating from the Tree of Knowledge.', image: 'https://i.swncdn.com/media/950w/via/5709-adam-and-eve.webp' },
+                    { year: -2348, date: '2348 BC', title: 'The Flood', reference: 'Genesis 6-9', description: 'Because of the perpetual wickedness of humanity, God sends a flood to destroy all of humanity. Only Noah and his family are spared via the Ark.', image: 'https://www.logos.com/grow/wp-content/uploads/2024/06/10-_-Typology-in-the-Old-Testament-716x376.png' },
+                    { year: -2242, date: '2242 BC', title: 'Tower of Babel', reference: 'Genesis 11', description: 'The nations are dispersed as a result of their disobedience and degradation of the nature of God in the building of the tower of Babel.', image: 'https://cdn.prod.website-files.com/5b8fd783bee52c8fb59b1fac/6723b14ac4d70f332bcba69e_Language%2520Is%2520Baffling%2520%25E2%2580%2593%2520The%2520Story%2520of%2520the%2520Tower%2520of%2520Babel.jpeg' },
+                    { year: -2166, date: '2166 BC', title: 'Birth of Abram', reference: 'Genesis 11', description: 'Abram would become Abraham, the father of Isaac the son of Promise.', image: 'https://upload.wikimedia.org/wikipedia/commons/a/af/Guercino_Abramo_ripudia_Agar_%28cropped%29.jpg' },
+                    { year: -2091, date: '2091 BC', title: 'Abrahamic Covenant', reference: 'Genesis 12', description: 'God promises descendants, land and blessings to Abraham at the age of 75.', image: 'https://s45600.pcdn.co/wp-content/uploads/2023/09/10.24.22_AbrahamicCovenant-1024x683-1-768x512.jpg' },
+                    { year: -2066, date: '2066 BC', title: 'Birth of Isaac', reference: 'Genesis 21', description: 'The son of promise, Isaac born to Abraham and Sarah, causes Sarah to laugh with God.', image: '' },
+                    { year: -2040, date: '~2040 BC', title: 'Testing of Abraham', reference: 'Genesis 22', description: 'Abraham is tested when God commands him to offer his son Isaac at Mount Moriah.', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg4xxeJ-Q48gJmHisslnjAYHN3yW0hQWbYvoopPyZ998tXPBGOt_rm_Yh3OjoS-iOv7yx97SMrv9hFOUkrj10XDpVMiiONn6QfJY2JspyBdw1qhyx1kHQ9AGuarTCQB2Jt940KIhR6uATUh/s1238/Abraham+and+Isaac.jpg' },
+                    { year: -2006, date: '2006 BC', title: 'Birth of Jacob and Esau', reference: 'Genesis 25', description: 'After God answers Isaac\'s prayer for Rebekah to conceive, she gives birth to Esau and Jacob who struggled within her.', image: '' },
+                    { year: -1950, date: 'Mid-1900s BC', title: 'Esau Sells His Birthright', reference: 'Genesis 27', description: 'Esau being weak in character sells his birthright to Jacob for some stew, validating the prophecy that the younger would serve the older.', image: 'https://cms-imgp.jw-cdn.org/img/p/1102016022/univ/art/1102016022_univ_lsr_lg.jpg' },
+                    { year: -1949, date: 'Mid-1900s BC', title: 'Jacob Flees Esau', reference: 'Genesis 28-29', description: 'In order to escape Esau\'s anger over losing his birthright, Jacob flees to Haran to live with Laban where he eventually marries both Leah and Rachel.', image: '' },
+                    { year: -1745, date: '1745 BC', title: 'Birth of Joseph', reference: 'Genesis 30', description: 'Joseph, God\'s eventual instrument in relocating his people to Egypt, is born to Jacob and Rachel.', image: 'https://gospelexposition.com/wp-content/uploads/2020/06/img_20200616_081317.jpg' },
+                    { year: -1728, date: '1728 BC', title: 'Joseph Sold into Slavery', reference: 'Genesis 37', description: 'Joseph\'s brothers sell him into slavery after becoming envious of the favoritism shown him by Jacob.', image: 'https://aish.com/wp-content/uploads/2009/05/07-Joseph-730x411-1.jpg' },
+                    { year: -1715, date: '1715 BC', title: 'Joseph Interprets Pharaoh\'s Dream', reference: 'Genesis 39-41', description: 'Joseph wins favor with Pharaoh and is promoted to second in command by interpreting his dreams.', image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.thetorah.com%2Farticle%2Fpharaohs-dreams-and-the-mirroring-of-josephs-inner-life&psig=AOvVaw0ow0aAPEp10L2bRSvXbNCt&ust=1759374288333000&source=images&cd=vfe&opi=89978449&ved=0CBYQjRxqFwoTCLjNzpOCgpADFQAAAAAdAAAAABAE' },
+                    { year: -1706, date: '1706 BC', title: 'Jacob\'s Family Enters Egypt', reference: 'Genesis 42-47', description: 'Joseph is reconciled to his family and because of his faithfulness, Jacob\'s descendants are preserved when they enter Egypt.', image: 'https://joelkime.com/wp-content/uploads/2019/11/joseph-restoration.jpg' },
+                    { year: -1571, date: '1571 BC', title: 'Birth of Moses', reference: 'Exodus 2', description: 'Moses is born and hidden in the Nile to preserve his life from the infanticide commanded by Pharaoh.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlqGKF7ibSbooz31nAmSgAm9cG-sQWyELgBA&s' },
+                    { year: -1531, date: '1531 BC', title: 'Moses Kills Egyptian', reference: 'Exodus 2', description: 'Moses reacting to seeing one of his people beaten kills an Egyptian and is forced to flee to Midian.', image: 'https://plainbibleteaching.com/wp-content/uploads/2009/07/moses-kills-egyptian.jpg' },
+                    { year: -1491, date: '1491 BC', title: 'The Burning Bush', reference: 'Exodus 3', description: 'Moses encounters God in a burning bush where he is instructed to lead God\'s people out of Egypt.', image: 'https://home.snu.edu/~hculbert/bush.jpg' },
+                    { year: -1491, date: '1491 BC', title: 'The Passover and Exodus', reference: 'Exodus 12', description: 'After experiencing 9 plagues and stubbornly refusing, God punishes Egypt with the 10th plague. Israel is finally released by Pharaoh.', image: 'https://static.wixstatic.com/media/00f46b_a62e0bfc142e4fd7a168e2928f7a93b7~mv2.jpg/v1/fill/w_568,h_380,al_c,lg_1,q_80,enc_avif,quality_auto/00f46b_a62e0bfc142e4fd7a168e2928f7a93b7~mv2.jpg' },
+                    { year: -1491, date: '1491 BC', title: 'Mt Sinai', reference: 'Exodus 19-20', description: 'God establishes His covenant with Israel, descending on Mt Sinai in fire and smoke and delivers the 10 commandments to Moses.', image: 'https://www.bible.ca/archeology/bible-archeology-exodus-mt-sinai-sinai-drawing.jpg' },
+                    { year: -1490, date: '1490 BC', title: 'Tabernacle Erected', reference: 'Exodus 25-40', description: 'God provides detailed instructions, from the ark to the altar, for His dwelling place with his people.', image: 'https://www.myjewishlearning.com/wp-content/uploads/2006/03/scinia_wikicommons.jpg' },
+                    { year: -1490, date: '1490 BC', title: 'First Day of Atonement', reference: 'Leviticus 16', description: 'The annual cleansing of Israel\'s sins is established with the high priest entering the Holy of Holies with sacrificial blood.', image: 'https://www.gospelimages.com/images/content/paintings/105/image_the_day_of_atonement_-_gospel_images_normal.jpg' },
+                    { year: -1452, date: '1452 BC', title: 'Bronze Serpent', reference: 'Numbers 21', description: 'After rebelling against Moses, God sends venomous serpents to plague Israel. A bronze serpent is provided which prevents destruction.', image: 'https://joshbenner.org/wp-content/uploads/2018/07/maxresdefault-11.jpg' },
+                    { year: -1452, date: '1452 BC', title: 'Balaam\'s Prophecy', reference: 'Numbers 23-24', description: 'The sorcerer Balaam, though hired to curse Israel, is only able to bless the covenant nation and curse her adversaries.', image: 'https://www.learnreligions.com/thmb/WYz_hciURAfugfU5ny80Jqr_MBk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/BalaamintheBible-171300653-43bf701fd28844c6a5682acf05b9c83a.jpg' },
+                    { year: -1451, date: '1451 BC', title: 'Prophecy of the Prophet', reference: 'Deuteronomy 18', description: 'Moses promises that God will raise up a prophet like Moses, a reference to the eventual coming of Christ.', image: '' },
+                    { year: -1451, date: '1451 BC', title: 'Crossing of the Jordan', reference: 'Joshua 3', description: 'Joshua spiritually prepares Israel for the Conquest of Canaan and miraculously crosses the Jordan on dry ground.', image: 'https://bibleteachingnotes.blog/wp-content/uploads/2018/12/Crossing-the-Jordan.png?w=640' },
+                    { year: -1451, date: '1451 BC', title: 'Walls of Jericho Fall', reference: 'Joshua 6', description: 'After obeying God and marching around the city for 7 days, the walls of Jericho fall. God saves Rahab and her family through faith.', image: 'https://miro.medium.com/v2/resize:fit:1400/1*Cr2TWK6KkZJjuGRnwK6uKg.jpeg' },
+                    { year: -1375, date: '1375-1350 BC', title: 'Period of the Judges Begins', reference: 'Judges 2-3', description: 'After Joshua\'s death, Israel enters a cyclical pattern of apostasy, oppression, and deliverance.', image: '' },
+                    { year: -1180, date: '1200-1160 BC', title: 'Gideon Defeats Midianites', reference: 'Judges 6-8', description: 'God calls the reluctant Gideon to deliver Israel from seven years of Midianite oppression.', image: '' },
+                    { year: -1100, date: '1150-1050 BC', title: 'Samson\'s Judgeship', reference: 'Judges 13-16', description: 'God raises up Samson as a Nazirite judge with supernatural strength to begin delivering Israel from Philistine oppression.', image: 'https://www.outlookmag.org/wp-content/uploads/2023/08/GettyImages-84290084.jpeg' },
+                    { year: -1145, date: '1150-1140 BC', title: 'Ruth and Boaz', reference: 'Ruth', description: 'During the period of the Judges, Ruth clings to Naomi, marries Boaz and becomes the great grandmother of King David.', image: '' },
+                    { year: -1121, date: '1121 BC', title: 'Birth of Samuel', reference: '1 Samuel 1', description: 'Hannah gives birth to Samuel after years of barrenness and prayer. Samuel becomes the last Judge and anoints Israel\'s first 2 kings.', image: 'https://www.learnreligions.com/thmb/xpimdoCrRq28DdY-VUGBc91CIjQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Hannah-in-the-Bible-GettyImages-171081058-57cd8d493df78c71b62efdda.jpg' },
+                    { year: -1043, date: '1043 BC', title: 'Saul Anointed King', reference: '1 Samuel 10', description: 'After Israel demands a King, Samuel reluctantly anoints Saul, the people\'s choice who would ultimately be ruled by disobedience.', image: '' },
+                    { year: -1024, date: '1024 BC', title: 'David Anointed King', reference: '1 Samuel 16', description: 'After Saul is rejected by God, Samuel is sent to Bethlehem where he anoints young David as Israel\'s future King.', image: 'https://www.gospelimages.com/images/content/paintings/121/image_david_anointed_king_normal.jpg' },
+                    { year: -1020, date: '~1020 BC', title: 'David & Goliath', reference: '1 Samuel 17', description: 'A young David defeats the mighty Goliath armed with only a sling and a few stones, showing his faith.', image: 'https://witkowskiblog.com/wp-content/uploads/2019/07/david-and-goliath.jpg' },
+                    { year: -1010, date: '1010 BC', title: 'David Becomes King of All Israel', reference: '2 Samuel 5', description: 'After years of patient waiting and trials, David is crowned king over all twelve tribes.', image: '' },
+                    { year: -1004, date: '1004 BC', title: 'Davidic Covenant', reference: '2 Samuel 7', description: 'God promises David that his throne will be established forever through his eventual descendant.', image: 'https://i.swncdn.com/media/950w/cms/CCOM/49221-davidic-covenant.630w.tn.jpg' },
+                    { year: -1017, date: '1017 BC', title: 'David Purchases Temple Land', reference: '2 Samuel 24', description: 'David obeys God in purchasing the threshing floor of Araunah, the site on which Solomon would build the temple.', image: '' },
+                    { year: -970, date: '970 BC', title: 'Solomon Becomes King', reference: '1 Kings 1-3', description: 'Solomon ascends to the throne after David\'s death, asking God for wisdom rather than riches.', image: 'https://www.rainbowtoken.com/wp-content/uploads/2019/02/ask-one-petition-of.jpg' },
+                    { year: -1008, date: '1012-1004 BC', title: 'Temple Built and Dedicated', reference: '1 Kings 6-8', description: 'Over 7 years, Solomon constructs a magnificent temple. God\'s glory resting on the ark assures the people that God is with them.', image: 'https://cdn.shopify.com/s/files/1/0246/0382/0104/files/3.png?v=1574319736' },
+                    { year: -931, date: '975-721 BC', title: 'Kingdom Divided', reference: '1 Kings 12 - 2 Kings 17', description: 'After Solomon\'s death, Israel is split into 2 kingdoms with Judah preserving David\'s line.', image: '' },
+                    { year: -862, date: '875-850 BC', title: 'Elijah\'s Ministry', reference: '1 Kings 17-19; 2 Kings 1-2', description: 'God raises up Elijah as prophet during Israel\'s spiritual crisis under Ahab and Jezebel.', image: 'https://comeandreason.com/images/stories/AnsweredByFire_Elijah_RobJoseph_1500.jpg' },
+                    { year: -825, date: '850-800 BC', title: 'Elisha\'s Ministry', reference: '2 Kings 2-13', description: 'Elisha receives a double portion of Elijah\'s spirit and performs numerous miracles.', image: '' },
+                    { year: -755, date: '760-750 BC', title: 'Amos and Hosea Prophesy', reference: 'Amos; Hosea', description: 'Amos condemns Israel\'s social injustice while Hosea illustrates God\'s enduring love.', image: '' },
+                    { year: -710, date: '740-680 BC', title: 'Isaiah\'s Prophetic Ministry', reference: 'Isaiah', description: 'Isaiah prophesies during Judah\'s political turmoil, offering both judgment and hope.', image: 'https://ichef.bbci.co.uk/images/ic/640x360/p01l9k2j.jpg' },
+                    { year: -722, date: '722 BC', title: 'Fall of Northern Kingdom', reference: '2 Kings 17', description: 'Assyria conquers Samaria, ending the Northern Kingdom of Israel.', image: 'https://images.squarespace-cdn.com/content/v1/56c13cc00442627a08632989/1600468817930-V5H7WBV25TL9QFOYPCVP/fallofsamariadonlawrence.jpg' },
+                    { year: -700, date: '715-686 BC', title: 'Hezekiah\'s Reforms', reference: '2 Kings 18-20', description: 'King Hezekiah leads religious reformation in Judah, restoring temple worship.', image: '' },
+                    { year: -624, date: '640-609 BC', title: 'Josiah\'s Reforms', reference: '2 Kings 22-23', description: 'Young King Josiah discovers the Book of the Law and initiates sweeping religious reforms.', image: '' },
+                    { year: -603, date: '627-580 BC', title: 'Jeremiah\'s Ministry', reference: 'Jeremiah', description: 'Jeremiah prophesies during Judah\'s final years, warning of Babylonian conquest.', image: 'https://www.myjewishlearning.com/wp-content/uploads/2020/06/Michelangelo_profeti_Jeremiah_02-1364x900.jpg' },
+                    { year: -605, date: '605 BC', title: 'Daniel Taken to Babylon', reference: 'Daniel 1', description: 'Daniel and other young nobles are taken captive in Nebuchadnezzar\'s first deportation.', image: 'https://i0.wp.com/bereansearching.com/wp-content/uploads/2023/05/image-1.png?ssl=1' },
+                    { year: -597, date: '597 BC', title: 'Second Deportation to Babylon', reference: '2 Kings 24', description: 'Nebuchadnezzar besieges Jerusalem again, deporting King Jehoiachin and thousands more.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM59_6a39KEpNvXg4oD9Jy2QvwfftjCrlQnQ&s' },
+                    { year: -582, date: '593-571 BC', title: 'Ezekiel\'s Prophetic Ministry', reference: 'Ezekiel', description: 'Ezekiel prophesies to the exiles in Babylon through dramatic visions and symbolic actions.', image: '' },
+                    { year: -586, date: '586 BC', title: 'Babylonian Captivity', reference: '2 Kings 25', description: 'Because of Israel\'s continued disobedience, God allows the destruction of Jerusalem and the temple by Nebuchadnezzar.', image: '' },
+                    { year: -539, date: '539 BC', title: 'Fall of Babylon', reference: 'Daniel 5', description: 'Cyrus the Persian conquers Babylon in fulfillment of Isaiah\'s prophecy.', image: 'https://upload.wikimedia.org/wikipedia/commons/5/50/The_fall_of_Babylon%3B_Cyrus_the_Great_defeating_the_Chaldean_Wellcome_V0034440.jpg' },
+                    { year: -537, date: '538-536 BC', title: 'Captivity Ends', reference: 'Ezra 1', description: 'As prophesied by Jeremiah, after 70 years of captivity, Cyrus allows Israel to return to Jerusalem and rebuild the temple.', image: '' },
+                    { year: -519, date: '520-518 BC', title: 'Haggai and Zechariah Prophesy', reference: 'Haggai; Zechariah 1-8', description: 'When temple rebuilding stalls, God sends Haggai and Zechariah to encourage the returned exiles.', image: 'https://images.squarespace-cdn.com/content/v1/5c11664445776e697a897a84/1546534449593-DAGWQW3BZATUVT4DN8U5/haggi.jpeg' },
+                    { year: -515, date: '515 BC', title: 'Temple Restored', reference: 'Ezra 3-6', description: 'With the prophetic encouragement of Haggai and Zechariah, Zerubbabel leads the rebuilding of the temple.', image: '' },
+                    { year: -478, date: '483-473 BC', title: 'Esther Saves Israel', reference: 'Esther', description: 'With Haman plotting to annihilate the Jews, God uses Esther to preserve Israel and establishes the feast of Purim.', image: 'https://www.agapebiblestudy.com/images/esther_study.jpg' },
+                    { year: -458, date: '458 BC', title: 'Ezra Returns to Jerusalem', reference: 'Ezra 7-10', description: 'Ezra the scribe leads a second return from exile, bringing spiritual renewal through teaching God\'s law.', image: '' },
+                    { year: -445, date: '445 BC', title: 'Nehemiah Rebuilds Jerusalem\'s Walls', reference: 'Nehemiah', description: 'Nehemiah returns as governor to rebuild Jerusalem\'s walls despite fierce opposition.', image: 'https://regehrlein.wordpress.com/wp-content/uploads/2018/06/nehemiah.jpg' },
+                    { year: -432, date: '435-430 BC', title: 'Malachi\'s Prophecy', reference: 'Malachi', description: 'Malachi delivers God\'s final Old Testament word, confronting spiritual apathy.', image: '' },
+                    { year: -415, date: '430-400 BC', title: 'Close of Old Testament Canon', reference: 'Malachi 4', description: 'The Old Testament period concludes with Malachi\'s prophecy. Four hundred years of prophetic silence will follow.', image: 'https://www.baptistmessage.com/wp-content/uploads/2016/12/Prophet-Malachi.jpg' }
+                ]
+            },
+            methods: {
+                getSpacingClass(index) {
+                    if (index >= this.events.length - 1) return 'spacing-normal';
+                    
+                    const current = this.events[index];
+                    const next = this.events[index + 1];
+                    const yearDiff = Math.abs(current.year - next.year);
+                    
+                    // Same year or within 1 year - very tight
+                    if (yearDiff <= 1) return 'spacing-tight';
+                    
+                    // Within 10 years - close
+                    if (yearDiff < 10) return 'spacing-close';
+                    
+                    // Within 50 years - normal
+                    if (yearDiff < 50) return 'spacing-normal';
+                    
+                    // Within 200 years - medium
+                    if (yearDiff < 200) return 'spacing-medium';
+                    
+                    // Over 200 years - large (but capped for huge gaps)
+                    return 'spacing-large';
+                },
+                toggleExpand(index) {
+                    const idx = this.expandedEvents.indexOf(index);
+                    if (idx > -1) {
+                        this.expandedEvents.splice(idx, 1);
+                    } else {
+                        this.expandedEvents.push(index);
+                    }
+                },
+                expandAll() {
+                    if (this.allExpanded) {
+                        this.expandedEvents = [];
+                        this.allExpanded = false;
+                    } else {
+                        this.expandedEvents = this.events.map((_, i) => i);
+                        this.allExpanded = true;
+                    }
+                },
+                scrollToTop() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
