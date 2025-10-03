@@ -87,7 +87,6 @@
         }
 
         .timeline-card {
-            background: rgba(255, 255, 255, 0.95);
             color: #333;
             padding: 10px 15px;
             border-radius: 8px;
@@ -95,26 +94,32 @@
             width: fit-content;
             max-width: max-content;
             display: inline-block;
+            vertical-align: top;
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
+            border: 2px solid;
+            margin-top: 0;
         }
 
         .timeline-event.expanded .timeline-card {
-            width: 380px;
-            max-width: 380px;
+            width: 500px;
+            max-width: 500px;
+            margin-top: 0;
         }
 
         .timeline-event.left {
             text-align: right;
             padding-right: calc(50% + 30px);
             padding-left: 20px;
+            min-height: 50px;
         }
 
         .timeline-event.right {
             text-align: left;
             padding-left: calc(50% + 30px);
             padding-right: 20px;
+            min-height: 50px;
         }
 
         .timeline-event.left .timeline-card {
@@ -135,27 +140,28 @@
         .timeline-event.left .timeline-card::after {
             content: '';
             position: absolute;
-            right: -10px;
-            top: 14px;
+            right: -12px;
+            top: 13px;
             border-style: solid;
-            border-width: 8px 0 8px 10px;
-            border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+            border-width: 8px 0 8px 12px;
+            border-color: transparent transparent transparent var(--card-border-color, #ccc);
         }
 
         .timeline-event.right .timeline-card::before {
             content: '';
             position: absolute;
-            left: -10px;
-            top: 14px;
+            left: -12px;
+            top: 13px;
             border-style: solid;
-            border-width: 8px 10px 8px 0;
-            border-color: transparent rgba(255, 255, 255, 0.95) transparent transparent;
+            border-width: 8px 12px 8px 0;
+            border-color: transparent var(--card-border-color, #ccc) transparent transparent;
         }
 
         .event-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            line-height: 1.2;
         }
 
         .timeline-event.left .event-header {
@@ -170,6 +176,8 @@
             font-size: 1rem;
             font-weight: bold;
             color: #2c3e50;
+            flex: 1;
+            line-height: 1.2;
         }
 
         .event-date {
@@ -180,6 +188,20 @@
             font-size: 0.75rem;
             white-space: nowrap;
             flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .event-date-inline {
+            background: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-left: 8px;
+            line-height: 1.2;
+            align-self: flex-start;
         }
 
         .event-details {
@@ -204,18 +226,6 @@
             margin-bottom: 10px;
         }
 
-        .event-date {
-            display: block;
-            background: #3498db;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            white-space: nowrap;
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-
         .event-reference {
             color: #7f8c8d;
             font-size: 0.85rem;
@@ -236,6 +246,93 @@
             padding-top: 8px;
             border-top: 1px solid #ecf0f1;
             font-style: italic;
+        }
+
+        .event-theme {
+            color: #555;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .legend-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 16px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            max-width: 250px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .legend-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .legend-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .legend-toggle {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        .legend-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .legend-card.expanded .legend-content {
+            max-height: 500px;
+            margin-top: 10px;
+        }
+
+        .theme-key-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .theme-key-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .theme-key-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .theme-key-label {
+            font-size: 0.8rem;
+            line-height: 1.3;
         }
 
         /* Spacing classes for different time gaps */
@@ -367,6 +464,17 @@
             .event-header {
                 justify-content: flex-start !important;
             }
+
+            .legend-container {
+                position: static;
+                margin: 20px auto;
+                max-width: 280px;
+            }
+
+            .controls {
+                bottom: auto;
+                top: 20px;
+            }
         }
     </style>
 </head>
@@ -379,24 +487,62 @@
             <p style="margin-top: 20px; font-size: 0.95rem; opacity: 0.85;">Click on any event to expand and learn more</p>
         </div>
 
+        <div class="legend-container">
+            <div class="legend-card" :class="{ expanded: periodLegendExpanded }" @click="periodLegendExpanded = !periodLegendExpanded">
+                <div class="legend-header">
+                    <span>Time Periods</span>
+                    <span class="legend-toggle">{{ periodLegendExpanded ? '▼' : '▶' }}</span>
+                </div>
+                <div class="legend-content">
+                    <div class="theme-key-item" v-for="(config, periodName) in periodConfig" :key="periodName">
+                        <div class="theme-key-color" :style="{ backgroundColor: config.color }"></div>
+                        <span class="theme-key-label">{{ config.label }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="legend-card" :class="{ expanded: themeLegendExpanded }" @click="themeLegendExpanded = !themeLegendExpanded">
+                <div class="legend-header">
+                    <span>Theological Themes</span>
+                    <span class="legend-toggle">{{ themeLegendExpanded ? '▼' : '▶' }}</span>
+                </div>
+                <div class="legend-content">
+                    <div class="theme-key-item" v-for="(config, themeName) in themeConfig" :key="themeName">
+                        <span style="font-size: 1.1rem; margin-right: 8px;">{{ config.icon }}</span>
+                        <span class="theme-key-label">{{ config.label }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="timeline">
                 <div class="timeline-line"></div>
 
                 <div v-for="(event, index) in events" :key="index"
                      :class="['timeline-event', index % 2 === 0 ? 'left' : 'right', getSpacingClass(index), { expanded: expandedEvents.includes(index) }]">
-                    
+
                     <div class="timeline-dot"></div>
-                    
-                    <div class="timeline-card" @click="toggleExpand(index)">
+
+                    <div class="timeline-card"
+                         :style="getCardStyle(event, index)"
+                         @click="toggleExpand(index)">
                         <div class="event-header">
+                            <span v-if="event.theme" style="margin-right: 6px; font-size: 1.1rem;">{{ themeConfig[event.theme].icon }}</span>
                             <div class="event-title">{{ event.title }}</div>
+                            <span class="event-date-inline">{{ event.date }}</span>
                         </div>
                         <div class="event-details">
                             <img v-if="event.image" :src="event.image" :alt="event.title" class="event-image">
-                            <span class="event-date">{{ event.date }}</span>
                             <p class="event-reference">📖 {{ event.reference }}</p>
                             <p class="event-description">{{ event.description }}</p>
+                            <div v-if="event.theme && event.theology" style="margin-top: 15px;">
+                                <div class="event-theme">
+                                    <span>{{ themeConfig[event.theme].icon }}</span>
+                                    <strong>{{ themeConfig[event.theme].label }}</strong>
+                                </div>
+                                <p style="margin-top: 10px; line-height: 1.6; font-size: 0.9rem; color: #555; white-space: pre-line;">{{ event.theology }}</p>
+                            </div>
                             <p v-if="event.source" class="event-source">Source: {{ event.source }}</p>
                         </div>
                     </div>
@@ -431,91 +577,124 @@
             data: {
                 expandedEvents: [],
                 allExpanded: false,
+                periodLegendExpanded: false,
+                themeLegendExpanded: false,
+                themeConfig: {
+                    'Covenant': { color: '#9b59b6', icon: '📜', label: 'Covenant Faithfulness' },
+                    'Expansion of Sin': { color: '#e74c3c', icon: '🐍', label: 'Expansion of Sin' }
+                },
+                periodConfig: {
+                    'PRIMEVAL HISTORY': { color: '#D4E9FF', border: '#8BBFEB', label: 'Primeval History' },
+                    'THE PATRIARCHAL AGE': { color: '#E6F3FF', border: '#9DC6ED', label: 'The Patriarchal Age' },
+                    'ISRAEL IN EGYPT': { color: '#FFF8DC', border: '#E6D4A0', label: 'Israel in Egypt' },
+                    'THE EXODUS AND WILDERNESS': { color: '#F0E6FF', border: '#C9A8E6', label: 'The Exodus and Wilderness' },
+                    'THE CONQUEST AND JUDGES': { color: '#E6FFE6', border: '#A0D9A0', label: 'The Conquest and Judges' },
+                    'THE UNITED MONARCHY': { color: '#FFE6F0', border: '#E6A8C9', label: 'The United Monarchy' },
+                    'THE DIVIDED KINGDOM': { color: '#FFF4E6', border: '#E6CFA0', label: 'The Divided Kingdom' },
+                    'THE EXILE AND RETURN': { color: '#E6F7FF', border: '#A0C9E6', label: 'The Exile and Return' }
+                },
                 events: [
-                    { year: -4000, date: '~4000 BC', title: 'Creation', reference: 'Genesis 1-2', description: 'God creates the heavens and the earth. Creation culminated in the creation of Man.', image: 'https://assets.answersingenesis.org/img/cms/content/contentnode/header_image/days-of-creation-updated.jpg', source: 'H&Y 54, Ussher 3, AiG "World Born"' },
-                    { year: -3999, date: 'Shortly After', title: 'The Fall', reference: 'Genesis 3', description: 'Adam and Eve disobey God by eating from the Tree of Knowledge.', image: 'https://i.swncdn.com/media/950w/via/5709-adam-and-eve.webp', source: 'H&Y 56, Ussher 4-5' },
-                    { year: -2348, date: '2348 BC', title: 'The Flood', reference: 'Genesis 6-9', description: 'Because of the perpetual wickedness of humanity, God sends a flood to destroy all of humanity. Only Noah and his family are spared via the Ark.', image: 'https://www.logos.com/grow/wp-content/uploads/2024/06/10-_-Typology-in-the-Old-Testament-716x376.png', source: 'H&Y 58, Ussher 7-8, AiG "World Born"' },
-                    { year: -2242, date: '2242 BC', title: 'Tower of Babel', reference: 'Genesis 11', description: 'The nations are dispersed as a result of their disobedience and degradation of the nature of God in the building of the tower of Babel.', image: 'https://cdn.prod.website-files.com/5b8fd783bee52c8fb59b1fac/6723b14ac4d70f332bcba69e_Language%2520Is%2520Baffling%2520%25E2%2580%2593%2520The%2520Story%2520of%2520the%2520Tower%2520of%2520Babel.jpeg', source: 'H&Y 59, Ussher 8-10, AiG "World Born"' },
-                    { year: -2166, date: '2166 BC', title: 'Birth of Abram', reference: 'Genesis 11', description: 'Abram would become Abraham, the father of Isaac the son of Promise.', image: 'https://upload.wikimedia.org/wikipedia/commons/a/af/Guercino_Abramo_ripudia_Agar_%28cropped%29.jpg', source: 'H&Y 59, ESVSB 59' },
-                    { year: -2091, date: '2091 BC', title: 'Abrahamic Covenant', reference: 'Genesis 12', description: 'God promises descendants, land and blessings to Abraham at the age of 75.', image: 'https://s45600.pcdn.co/wp-content/uploads/2023/09/10.24.22_AbrahamicCovenant-1024x683-1-768x512.jpg', source: 'H&Y 60, Ussher 18' },
-                    { year: -2066, date: '2066 BC', title: 'Birth of Isaac', reference: 'Genesis 21', description: 'The son of promise, Isaac born to Abraham and Sarah, causes Sarah to laugh with God.', image: '', source: 'H&Y 61, Ussher 20' },
-                    { year: -2040, date: '~2040 BC', title: 'Testing of Abraham', reference: 'Genesis 22', description: 'Abraham is tested when God commands him to offer his son Isaac at Mount Moriah.', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg4xxeJ-Q48gJmHisslnjAYHN3yW0hQWbYvoopPyZ998tXPBGOt_rm_Yh3OjoS-iOv7yx97SMrv9hFOUkrj10XDpVMiiONn6QfJY2JspyBdw1qhyx1kHQ9AGuarTCQB2Jt940KIhR6uATUh/s1238/Abraham+and+Isaac.jpg', source: 'H&Y 61, ESVSB 77' },
-                    { year: -2006, date: '2006 BC', title: 'Birth of Jacob and Esau', reference: 'Genesis 25', description: 'After God answers Isaac\'s prayer for Rebekah to conceive, she gives birth to Esau and Jacob who struggled within her.', image: '', source: 'H&Y 61, Ussher 26' },
-                    { year: -1950, date: 'Mid-1900s BC', title: 'Esau Sells His Birthright', reference: 'Genesis 27', description: 'Esau being weak in character sells his birthright to Jacob for some stew, validating the prophecy that the younger would serve the older.', image: 'https://cms-imgp.jw-cdn.org/img/p/1102016022/univ/art/1102016022_univ_lsr_lg.jpg', source: 'H&Y 61, Ussher 28' },
-                    { year: -1949, date: 'Mid-1900s BC', title: 'Jacob Flees Esau', reference: 'Genesis 28-29', description: 'In order to escape Esau\'s anger over losing his birthright, Jacob flees to Haran to live with Laban where he eventually marries both Leah and Rachel.', image: '', source: 'H&Y 61, Ussher 28-29' },
-                    { year: -1745, date: '1745 BC', title: 'Birth of Joseph', reference: 'Genesis 30', description: 'Joseph, God\'s eventual instrument in relocating his people to Egypt, is born to Jacob and Rachel.', image: 'https://gospelexposition.com/wp-content/uploads/2020/06/img_20200616_081317.jpg', source: 'H&Y 62, Ussher 34, AiG "Bible Timeline"' },
-                    { year: -1728, date: '1728 BC', title: 'Joseph Sold into Slavery', reference: 'Genesis 37', description: 'Joseph\'s brothers sell him into slavery after becoming envious of the favoritism shown him by Jacob.', image: 'https://aish.com/wp-content/uploads/2009/05/07-Joseph-730x411-1.jpg', source: 'H&Y 63, Ussher 37, AiG "Bible Timeline"' },
-                    { year: -1715, date: '1715 BC', title: 'Joseph Interprets Pharaoh\'s Dream', reference: 'Genesis 39-41', description: 'Joseph wins favor with Pharaoh and is promoted to second in command by interpreting his dreams.', image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.thetorah.com%2Farticle%2Fpharaohs-dreams-and-the-mirroring-of-josephs-inner-life&psig=AOvVaw0ow0aAPEp10L2bRSvXbNCt&ust=1759374288333000&source=images&cd=vfe&opi=89978449&ved=0CBYQjRxqFwoTCLjNzpOCgpADFQAAAAAdAAAAABAE', source: 'H&Y 63, Ussher 39' },
-                    { year: -1706, date: '1706 BC', title: 'Jacob\'s Family Enters Egypt', reference: 'Genesis 42-47', description: 'Joseph is reconciled to his family and because of his faithfulness, Jacob\'s descendants are preserved when they enter Egypt.', image: 'https://joelkime.com/wp-content/uploads/2019/11/joseph-restoration.jpg', source: 'H&Y 63, Ussher 41' },
-                    { year: -1571, date: '1571 BC', title: 'Birth of Moses', reference: 'Exodus 2', description: 'Moses is born and hidden in the Nile to preserve his life from the infanticide commanded by Pharaoh.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlqGKF7ibSbooz31nAmSgAm9cG-sQWyELgBA&s', source: 'H&Y 73, Ussher 56' },
-                    { year: -1531, date: '1531 BC', title: 'Moses Kills Egyptian', reference: 'Exodus 2', description: 'Moses reacting to seeing one of his people beaten kills an Egyptian and is forced to flee to Midian.', image: 'https://plainbibleteaching.com/wp-content/uploads/2009/07/moses-kills-egyptian.jpg', source: 'H&Y 75, Ussher 58' },
-                    { year: -1491, date: '1491 BC', title: 'The Burning Bush', reference: 'Exodus 3', description: 'Moses encounters God in a burning bush where he is instructed to lead God\'s people out of Egypt.', image: 'https://home.snu.edu/~hculbert/bush.jpg', source: 'H&Y 75, Ussher 60' },
-                    { year: -1491, date: '1491 BC', title: 'The Passover and Exodus', reference: 'Exodus 12', description: 'After experiencing 9 plagues and stubbornly refusing, God punishes Egypt with the 10th plague. Israel is finally released by Pharaoh.', image: 'https://static.wixstatic.com/media/00f46b_a62e0bfc142e4fd7a168e2928f7a93b7~mv2.jpg/v1/fill/w_568,h_380,al_c,lg_1,q_80,enc_avif,quality_auto/00f46b_a62e0bfc142e4fd7a168e2928f7a93b7~mv2.jpg', source: 'H&Y 76, Ussher 62, AiG "Bible Timeline"' },
-                    { year: -1491, date: '1491 BC', title: 'Mt Sinai', reference: 'Exodus 19-20', description: 'God establishes His covenant with Israel, descending on Mt Sinai in fire and smoke and delivers the 10 commandments to Moses.', image: 'https://www.bible.ca/archeology/bible-archeology-exodus-mt-sinai-sinai-drawing.jpg', source: 'H&Y 78, Ussher 64' },
-                    { year: -1490, date: '1490 BC', title: 'Tabernacle Erected', reference: 'Exodus 25-40', description: 'God provides detailed instructions, from the ark to the altar, for His dwelling place with his people.', image: 'https://www.myjewishlearning.com/wp-content/uploads/2006/03/scinia_wikicommons.jpg', source: 'H&Y 79, Ussher 66' },
-                    { year: -1490, date: '1490 BC', title: 'First Day of Atonement', reference: 'Leviticus 16', description: 'The annual cleansing of Israel\'s sins is established with the high priest entering the Holy of Holies with sacrificial blood.', image: 'https://www.gospelimages.com/images/content/paintings/105/image_the_day_of_atonement_-_gospel_images_normal.jpg', source: 'H&Y 90, ESVSB 228' },
-                    { year: -1452, date: '1452 BC', title: 'Bronze Serpent', reference: 'Numbers 21', description: 'After rebelling against Moses, God sends venomous serpents to plague Israel. A bronze serpent is provided which prevents destruction.', image: 'https://joshbenner.org/wp-content/uploads/2018/07/maxresdefault-11.jpg', source: 'H&Y 105, Ussher 74' },
-                    { year: -1452, date: '1452 BC', title: 'Balaam\'s Prophecy', reference: 'Numbers 23-24', description: 'The sorcerer Balaam, though hired to curse Israel, is only able to bless the covenant nation and curse her adversaries.', image: 'https://www.learnreligions.com/thmb/WYz_hciURAfugfU5ny80Jqr_MBk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/BalaamintheBible-171300653-43bf701fd28844c6a5682acf05b9c83a.jpg', source: 'H&Y 105, Ussher 75' },
-                    { year: -1451, date: '1451 BC', title: 'Prophecy of the Prophet', reference: 'Deuteronomy 18', description: 'Moses promises that God will raise up a prophet like Moses, a reference to the eventual coming of Christ.', image: '', source: 'H&Y 118, Ussher 77' },
-                    { year: -1451, date: '1451 BC', title: 'Crossing of the Jordan', reference: 'Joshua 3', description: 'Joshua spiritually prepares Israel for the Conquest of Canaan and miraculously crosses the Jordan on dry ground.', image: 'https://bibleteachingnotes.blog/wp-content/uploads/2018/12/Crossing-the-Jordan.png?w=640', source: 'H&Y 128, Ussher 80' },
-                    { year: -1451, date: '1451 BC', title: 'Walls of Jericho Fall', reference: 'Joshua 6', description: 'After obeying God and marching around the city for 7 days, the walls of Jericho fall. God saves Rahab and her family through faith.', image: 'https://miro.medium.com/v2/resize:fit:1400/1*Cr2TWK6KkZJjuGRnwK6uKg.jpeg', source: 'H&Y 128, Ussher 80' },
-                    { year: -1375, date: '1375-1350 BC', title: 'Period of the Judges Begins', reference: 'Judges 2-3', description: 'After Joshua\'s death, Israel enters a cyclical pattern of apostasy, oppression, and deliverance.', image: '', source: 'H&Y 141, ESVSB 427, AiG Bible Timeline' },
-                    { year: -1180, date: '1200-1160 BC', title: 'Gideon Defeats Midianites', reference: 'Judges 6-8', description: 'God calls the reluctant Gideon to deliver Israel from seven years of Midianite oppression.', image: '', source: 'H&Y 144-145, ESVSB 439, GotQuestions.org' },
-                    { year: -1100, date: '1150-1050 BC', title: 'Samson\'s Judgeship', reference: 'Judges 13-16', description: 'God raises up Samson as a Nazirite judge with supernatural strength to begin delivering Israel from Philistine oppression.', image: 'https://www.outlookmag.org/wp-content/uploads/2023/08/GettyImages-84290084.jpeg', source: 'H&Y 146, ESVSB 451, AiG Bible Timeline' },
-                    { year: -1145, date: '1150-1140 BC', title: 'Ruth and Boaz', reference: 'Ruth', description: 'During the period of the Judges, Ruth clings to Naomi, marries Boaz and becomes the great grandmother of King David.', image: '', source: 'H&Y 150-157, ESVSB 467' },
-                    { year: -1121, date: '1121 BC', title: 'Birth of Samuel', reference: '1 Samuel 1', description: 'Hannah gives birth to Samuel after years of barrenness and prayer. Samuel becomes the last Judge and anoints Israel\'s first 2 kings.', image: 'https://www.learnreligions.com/thmb/xpimdoCrRq28DdY-VUGBc91CIjQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Hannah-in-the-Bible-GettyImages-171081058-57cd8d493df78c71b62efdda.jpg', source: 'H&Y 163, ESVSB 538' },
-                    { year: -1043, date: '1043 BC', title: 'Saul Anointed King', reference: '1 Samuel 10', description: 'After Israel demands a King, Samuel reluctantly anoints Saul, the people\'s choice who would ultimately be ruled by disobedience.', image: '', source: 'H&Y 164, Ussher 90' },
-                    { year: -1024, date: '1024 BC', title: 'David Anointed King', reference: '1 Samuel 16', description: 'After Saul is rejected by God, Samuel is sent to Bethlehem where he anoints young David as Israel\'s future King.', image: 'https://www.gospelimages.com/images/content/paintings/121/image_david_anointed_king_normal.jpg', source: 'H&Y 166, Ussher 94' },
-                    { year: -1020, date: '~1020 BC', title: 'David & Goliath', reference: '1 Samuel 17', description: 'A young David defeats the mighty Goliath armed with only a sling and a few stones, showing his faith.', image: 'https://witkowskiblog.com/wp-content/uploads/2019/07/david-and-goliath.jpg', source: 'H&Y 166, ESVSB 564' },
-                    { year: -1010, date: '1010 BC', title: 'David Becomes King of All Israel', reference: '2 Samuel 5', description: 'After years of patient waiting and trials, David is crowned king over all twelve tribes.', image: '', source: 'ESVSB 544, GotQuestions.org' },
-                    { year: -1004, date: '1004 BC', title: 'Davidic Covenant', reference: '2 Samuel 7', description: 'God promises David that his throne will be established forever through his eventual descendant.', image: 'https://i.swncdn.com/media/950w/cms/CCOM/49221-davidic-covenant.630w.tn.jpg', source: 'H&Y 169, Ussher 98' },
-                    { year: -1017, date: '1017 BC', title: 'David Purchases Temple Land', reference: '2 Samuel 24', description: 'David obeys God in purchasing the threshing floor of Araunah, the site on which Solomon would build the temple.', image: '', source: 'H&Y 171, Ussher 101' },
-                    { year: -970, date: '970 BC', title: 'Solomon Becomes King', reference: '1 Kings 1-3', description: 'Solomon ascends to the throne after David\'s death, asking God for wisdom rather than riches.', image: 'https://www.rainbowtoken.com/wp-content/uploads/2019/02/ask-one-petition-of.jpg', source: 'ESVSB 587, GotQuestions.org' },
-                    { year: -1008, date: '1012-1004 BC', title: 'Temple Built and Dedicated', reference: '1 Kings 6-8', description: 'Over 7 years, Solomon constructs a magnificent temple. God\'s glory resting on the ark assures the people that God is with them.', image: 'https://cdn.shopify.com/s/files/1/0246/0382/0104/files/3.png?v=1574319736', source: 'H&Y 180, Ussher 104-106' },
-                    { year: -931, date: '975-721 BC', title: 'Kingdom Divided', reference: '1 Kings 12 - 2 Kings 17', description: 'After Solomon\'s death, Israel is split into 2 kingdoms with Judah preserving David\'s line.', image: '', source: 'H&Y 181, Ussher 110, AiG "Bible Timeline"' },
-                    { year: -862, date: '875-850 BC', title: 'Elijah\'s Ministry', reference: '1 Kings 17-19; 2 Kings 1-2', description: 'God raises up Elijah as prophet during Israel\'s spiritual crisis under Ahab and Jezebel.', image: 'https://comeandreason.com/images/stories/AnsweredByFire_Elijah_RobJoseph_1500.jpg', source: 'ESVSB 615, AiG Bible Timeline' },
-                    { year: -825, date: '850-800 BC', title: 'Elisha\'s Ministry', reference: '2 Kings 2-13', description: 'Elisha receives a double portion of Elijah\'s spirit and performs numerous miracles.', image: '', source: 'ESVSB 645, GotQuestions.org' },
-                    { year: -755, date: '760-750 BC', title: 'Amos and Hosea Prophesy', reference: 'Amos; Hosea', description: 'Amos condemns Israel\'s social injustice while Hosea illustrates God\'s enduring love.', image: '', source: 'ESVSB 1517-1537, AiG Bible Timeline' },
-                    { year: -710, date: '740-680 BC', title: 'Isaiah\'s Prophetic Ministry', reference: 'Isaiah', description: 'Isaiah prophesies during Judah\'s political turmoil, offering both judgment and hope.', image: 'https://ichef.bbci.co.uk/images/ic/640x360/p01l9k2j.jpg', source: 'H&Y 293 - 311, ESVSB 1147, GotQuestions.org' },
-                    { year: -722, date: '722 BC', title: 'Fall of Northern Kingdom', reference: '2 Kings 17', description: 'Assyria conquers Samaria, ending the Northern Kingdom of Israel.', image: 'https://images.squarespace-cdn.com/content/v1/56c13cc00442627a08632989/1600468817930-V5H7WBV25TL9QFOYPCVP/fallofsamariadonlawrence.jpg', source: 'ESVSB 667, AiG Bible Timeline' },
-                    { year: -700, date: '715-686 BC', title: 'Hezekiah\'s Reforms', reference: '2 Kings 18-20', description: 'King Hezekiah leads religious reformation in Judah, restoring temple worship.', image: '', source: 'ESVSB 669, GotQuestions.org' },
-                    { year: -624, date: '640-609 BC', title: 'Josiah\'s Reforms', reference: '2 Kings 22-23', description: 'Young King Josiah discovers the Book of the Law and initiates sweeping religious reforms.', image: '', source: 'ESVSB 681, AiG Bible Timeline' },
-                    { year: -603, date: '627-580 BC', title: 'Jeremiah\'s Ministry', reference: 'Jeremiah', description: 'Jeremiah prophesies during Judah\'s final years, warning of Babylonian conquest.', image: 'https://www.myjewishlearning.com/wp-content/uploads/2020/06/Michelangelo_profeti_Jeremiah_02-1364x900.jpg', source: 'ESVSB 1259, GotQuestions.org' },
-                    { year: -605, date: '605 BC', title: 'Daniel Taken to Babylon', reference: 'Daniel 1', description: 'Daniel and other young nobles are taken captive in Nebuchadnezzar\'s first deportation.', image: 'https://i0.wp.com/bereansearching.com/wp-content/uploads/2023/05/image-1.png?ssl=1', source: 'ESVSB 1455, AiG Bible Timeline' },
-                    { year: -597, date: '597 BC', title: 'Second Deportation to Babylon', reference: '2 Kings 24', description: 'Nebuchadnezzar besieges Jerusalem again, deporting King Jehoiachin and thousands more.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM59_6a39KEpNvXg4oD9Jy2QvwfftjCrlQnQ&s', source: 'ESVSB 685, GotQuestions.org' },
-                    { year: -582, date: '593-571 BC', title: 'Ezekiel\'s Prophetic Ministry', reference: 'Ezekiel', description: 'Ezekiel prophesies to the exiles in Babylon through dramatic visions and symbolic actions.', image: '', source: 'ESVSB 1373, AiG Bible Timeline' },
-                    { year: -586, date: '586 BC', title: 'Babylonian Captivity', reference: '2 Kings 25', description: 'Because of Israel\'s continued disobedience, God allows the destruction of Jerusalem and the temple by Nebuchadnezzar.', image: '', source: 'H&Y 181, ESVSB 707' },
-                    { year: -539, date: '539 BC', title: 'Fall of Babylon', reference: 'Daniel 5', description: 'Cyrus the Persian conquers Babylon in fulfillment of Isaiah\'s prophecy.', image: 'https://upload.wikimedia.org/wikipedia/commons/5/50/The_fall_of_Babylon%3B_Cyrus_the_Great_defeating_the_Chaldean_Wellcome_V0034440.jpg', source: 'ESVSB 1469, GotQuestions.org' },
-                    { year: -537, date: '538-536 BC', title: 'Captivity Ends', reference: 'Ezra 1', description: 'As prophesied by Jeremiah, after 70 years of captivity, Cyrus allows Israel to return to Jerusalem and rebuild the temple.', image: '', source: 'H&Y 205-206, ESVSB 761' },
-                    { year: -519, date: '520-518 BC', title: 'Haggai and Zechariah Prophesy', reference: 'Haggai; Zechariah 1-8', description: 'When temple rebuilding stalls, God sends Haggai and Zechariah to encourage the returned exiles.', image: 'https://images.squarespace-cdn.com/content/v1/5c11664445776e697a897a84/1546534449593-DAGWQW3BZATUVT4DN8U5/haggi.jpeg', source: 'ESVSB 1585-1603, AiG Bible Timeline' },
-                    { year: -515, date: '515 BC', title: 'Temple Restored', reference: 'Ezra 3-6', description: 'With the prophetic encouragement of Haggai and Zechariah, Zerubbabel leads the rebuilding of the temple.', image: '', source: 'H&Y 206-207, ESVSB 763' },
-                    { year: -478, date: '483-473 BC', title: 'Esther Saves Israel', reference: 'Esther', description: 'With Haman plotting to annihilate the Jews, God uses Esther to preserve Israel and establishes the feast of Purim.', image: 'https://www.agapebiblestudy.com/images/esther_study.jpg', source: 'H&Y 221-230, ESVSB 777' },
-                    { year: -458, date: '458 BC', title: 'Ezra Returns to Jerusalem', reference: 'Ezra 7-10', description: 'Ezra the scribe leads a second return from exile, bringing spiritual renewal through teaching God\'s law.', image: '', source: 'ESVSB 771, GotQuestions.org' },
-                    { year: -445, date: '445 BC', title: 'Nehemiah Rebuilds Jerusalem\'s Walls', reference: 'Nehemiah', description: 'Nehemiah returns as governor to rebuild Jerusalem\'s walls despite fierce opposition.', image: 'https://regehrlein.wordpress.com/wp-content/uploads/2018/06/nehemiah.jpg', source: 'ESVSB 783, AiG Bible Timeline' },
-                    { year: -432, date: '435-430 BC', title: 'Malachi\'s Prophecy', reference: 'Malachi', description: 'Malachi delivers God\'s final Old Testament word, confronting spiritual apathy.', image: '', source: 'ESVSB 1599, GotQuestions.org' },
-                    { year: -415, date: '430-400 BC', title: 'Close of Old Testament Canon', reference: 'Malachi 4', description: 'The Old Testament period concludes with Malachi\'s prophecy. Four hundred years of prophetic silence will follow.', image: 'https://www.baptistmessage.com/wp-content/uploads/2016/12/Prophet-Malachi.jpg', source: 'ESVSB 1607, AiG Bible Timeline' }
+                    { year: -4000, date: '~4000 BC', title: 'Creation', reference: 'Genesis 1-2', description: 'God creates the heavens and the earth in six days establishing perfect order. Creation culminated in the creation of Man in God\'s own image.', image: 'https://assets.answersingenesis.org/img/cms/content/contentnode/header_image/days-of-creation-updated.jpg', source: 'H&Y 54, Ussher 3, AiG "World Born"', theme: 'Covenant', period: 'PRIMEVAL HISTORY', theology: "God establishes the foundational covenant relationship with humanity, even though the word 'covenant' does not actually appear in the creation account. He blesses Adam and Eve, commanding them to be fruitful and multiply. He grants them dominion over creation and provides only one single prohibition. Do not eat from the tree of knowledge. This creates the basic covenant structure that will characterize all future divine-human relationships. Blessing for obedience and a curse for disobedience. God walks with humanity in the garden in perfect fellowship, establishing the pattern of intimate covenant communion that He desires with His people throughout the history of redemption. The creation covenant sets the stage for understanding both humanity's calling as God's image-bearers and the devastating consequences that result when that covenant relationship is broken." },
+                    { year: -3999, date: 'Shortly After', title: 'The Fall', reference: 'Genesis 3', description: 'Adam and Eve disobey God by eating from the Tree of Knowledge of Good and Evil', image: 'https://i.swncdn.com/media/950w/via/5709-adam-and-eve.webp', source: 'H&Y 56, Ussher 4-5', theme: 'Expansion of Sin', period: 'PRIMEVAL HISTORY', theology: "A single act of disobedience and sin enters creation. Adam and Eve experience shame, hide from God's presence, and shift blame to others, expanding the result of this single act. The serpent's deception, 'you will be like God,' reveals the fundamental essence of sin. A desire for autonomy from God's authority. Sin's consequences ripple through all relationships, with God (hiding and fear), with each other (blame and conflict), with self (shame and guilt), and with all of creation (curse and toil). The speed of sin's expansion is striking, from one command broken to universal corruption affecting every aspect of our existence.\n\nYet even in judgment, God's covenant faithfulness shines through. His promise of the woman's seed who will crush the serpent's head (3:15) is the first gospel message, showing that God will not abandon His creation to sin's destruction. God provides Adam and Eve with clothing, demonstrating His continued care despite their rebellion. This pattern of sin's expansion met by God's grace will characterize the entire biblical narrative from start to finish." },
+                    { year: -2348, date: '2348 BC', title: 'The Flood', reference: 'Genesis 6-9', description: 'Because of the perpetual wickedness of humanity where every thought was evil continually, God sends a flood to destroy all of humanity. Only Noah and his family are spared via the Ark', image: 'https://www.logos.com/grow/wp-content/uploads/2024/06/10-_-Typology-in-the-Old-Testament-716x376.png', source: 'H&Y 58, Ussher 7-8, AiG "World Born"', theme: 'Expansion of Sin', period: 'PRIMEVAL HISTORY', theology: "Sin has now expanded from a single individual act to corruption on a global scale. Genesis 6 records \"the wickedness of man was great in the earth, and that every intention of the thoughts of his heart was only evil continually.\" The expansion of sin has become complete. Moral (thoughts), volitional (intentions), and social (violence) corruption pervades all humanity. God's grief over making humanity reveals the depth of sin's devastation to His good creation. The flood represents both the wages of sin (death and destruction) and God's determination to deal comprehensively with evil.\n\nYet God preserves a remnant through Noah, demonstrating His covenant faithfulness to creation itself. The post-flood covenant (Gen 9) reveals a crucial truth. God commits to preserve the earth despite humanity's unchanged sin nature, for \"the intention of man's heart is evil from his youth.\" (8:21). This commitment provides the stable ground necessary for God's redemptive plan to unfold. The rainbow sign reminds us that while sin deserves judgment, God's covenant mercy restrains His wrath for the sake of redemption." },
+                    { year: -2242, date: '2242 BC', title: 'Tower of Babel', reference: 'Genesis 11', description: 'The nations are dispersed as a result of their collective disobedience and degradation of the nature of God in the building of the tower of Babel', image: 'https://cdn.prod.website-files.com/5b8fd783bee52c8fb59b1fac/6723b14ac4d70f332bcba69e_Language%2520Is%2520Baffling%2520%25E2%2580%2593%2520The%2520Story%2520of%2520the%2520Tower%2520of%2520Babel.jpeg', source: 'H&Y 59, Ussher 8-10, AiG "World Born"', theme: 'Expansion of Sin', period: 'PRIMEVAL HISTORY', theology: "Sin now manifests as organized, institutional rebellion as humanity unites not for God's glory but to \"make a name for ourselves\" (11:4) and prevent their divinely commanded dispersion. This reveals sin's evolution from individual disobedience (Adam) to family violence (Cain) to global corruption (flood) to systematic rebellion against God's purposes. The tower represents humanity's attempt to reach heaven through its own efforts, to achieve a godlike feat without submission to the One True God. Their unity in rebellion shows sin's power to corrupt even good things (human cooperation) for evil ends.\n\nGod's scattering of the nations might seem like judgment, but it actually preserves humanity from the totalitarian evil that would result from unified rebellion. The confusion of languages limits sin's collective power while maintaining the diversity of humanity. Most importantly, this scattering sets the stage for God's covenant strategy through Abraham. He will choose one man from among the scattered nations through whom He will bless all the families of the earth He has just dispersed." },
+                    { year: -2166, date: '2166 BC', title: 'Birth of Abram', reference: 'Genesis 11', description: 'Abram would become Abraham, the father of Isaac the son of Promise.', image: 'https://upload.wikimedia.org/wikipedia/commons/a/af/Guercino_Abramo_ripudia_Agar_%28cropped%29.jpg', source: 'H&Y 59, ESVSB 59', period: 'THE PATRIARCHAL AGE' },
+                    { year: -2091, date: '2091 BC', title: 'Abrahamic Covenant', reference: 'Genesis 12', description: 'God promises descendants land and blessings to Abraham at the age of 75 establishing a covenant to bless all nations', image: 'https://s45600.pcdn.co/wp-content/uploads/2023/09/10.24.22_AbrahamicCovenant-1024x683-1-768x512.jpg', source: 'H&Y 60, Ussher 18', theme: 'Covenant', period: 'THE PATRIARCHAL AGE', theology: "God's redemptive covenant with Abraham is revealed through several covenantal promises, including land, descendants, and blessing. This covenant directly addresses the curse of sin that we see described in Genesis 3. Through Abraham's seed, God will reverse the curse and restore blessing to all creation. The covenant is entirely gracious, and an act of God and God alone, initiated by His sovereign choice rather than Abraham's merit, and guaranteed by His faithfulness alone rather than any human works. When Abraham believes God's seemingly impossible promise, it is \"credited to him as righteousness\" (15:16), establishing faith, rather than works, as the means of establishing a covenant relationship.\n\nThe Abrahamic covenant becomes the foundation for all subsequent biblical revelation. Every subsequent covenant builds upon these promises. The Mosaic covenant organizes Abraham's descendants as a nation, the Davidic covenant identifies the royal line through which blessing will come, and the New Covenant internalizes what was previously external. God's method is particular (one man) for a universal purpose (all nations). This covenant demonstrates that God's response to the expansion of sin is not abandonment, but redemption through relationship." },
+                    { year: -2066, date: '2066 BC', title: 'Birth of Isaac', reference: 'Genesis 21', description: 'The son of promise, Isaac born to Abraham and Sarah in their old age, causes Sarah to laugh with God', image: '', source: 'H&Y 61, Ussher 20', period: 'THE PATRIARCHAL AGE' },
+                    { year: -2040, date: '~2040 BC', title: 'Testing of Abraham', reference: 'Genesis 22', description: 'Abraham is tested when God commands him to offer his son Isaac as a sacrifice at Mount Moriah', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg4xxeJ-Q48gJmHisslnjAYHN3yW0hQWbYvoopPyZ998tXPBGOt_rm_Yh3OjoS-iOv7yx97SMrv9hFOUkrj10XDpVMiiONn6QfJY2JspyBdw1qhyx1kHQ9AGuarTCQB2Jt940KIhR6uATUh/s1238/Abraham+and+Isaac.jpg', source: 'H&Y 61, ESVSB 77', theme: 'Covenant', period: 'THE PATRIARCHAL AGE', theology: "Abraham's willingness to sacrifice Isaac, despite the seeming contradiction of God's promise, reveals Abraham's complete trust and ultimate covenant faithfulness. Abraham had waited 25 long years for this son of promise, and now God asks him to give up the very one through whom the covenant blessings were intended to flow. His obedience demonstrates complete faith that God could overcome death itself if necessary to fulfill His promises. The test proves that Abraham fears God above all else, valuing obedience to God more than God's gifts.\n\nGod providing a ram as a substitute establishes the concept of substitutionary sacrifice as central to maintaining a covenant relationship. The ram dies in Isaac's place, prefiguring the entire sacrificial system and ultimately pointing to the sending of God's own Son. Abraham names the place \"The LORD will provide\" (22:14) prophetically speaking of God's ultimate provision for sin. This event demonstrates that while God tests our faith, He also provides what we need to accomplish His purposes. He will never ask for something without providing the means for us to do His will." },
+                    { year: -2006, date: '2006 BC', title: 'Birth of Jacob and Esau', reference: 'Genesis 25', description: 'After God answers Isaacs prayer for Rebekah to conceive, she gives birth to Esau and Jacob who struggled within her from the womb.', image: '', source: 'H&Y 61, Ussher 26', period: 'THE PATRIARCHAL AGE' },
+                    { year: -1950, date: 'Mid-1900s BC', title: 'Esau Sells His Birthright', reference: 'Genesis 27', description: 'Esau being weak in character sells his birthright to Jacob for some stew, validating the prophecy that the younger would serve the older', image: 'https://cms-imgp.jw-cdn.org/img/p/1102016022/univ/art/1102016022_univ_lsr_lg.jpg', source: 'H&Y 61, Ussher 28', theme: 'Expansion of Sin', period: 'THE PATRIARCHAL AGE', theology: "Sin expands within the covenant family itself through deception and favoritism. Rebekah and Jacob devise a scheme to steal the blessing through elaborate deception. Esau's casual sale of his birthright for a bowl of stew reveals how sin causes people to value temporary, earthly satisfaction over eternal blessings. The family's dysfunction demonstrates sin's power to corrupt even those who are recipients of God's covenant promises.\n\nYet God's sovereignty continues to prevail over humanity's sins. He had chosen Jacob before birth, declaring \"the older shall serve the younger\" while the twins were still in the womb. This shows that covenant blessing flows not from human merit or manipulation but from God's election and grace. God uses even human sin as a tool to accomplish His purposes, though the sin itself brings painful consequences. This story reveals both sin's destructive power and God's ability to achieve His purposes despite human failure." },
+                    { year: -1949, date: 'Mid-1900s BC', title: 'Jacob Flees Esau', reference: 'Genesis 28-29', description: 'In order to escape Esau\'s anger over losing his birthright and blessing Jacob flees to Haran to live with Laban where he eventually marries both Leah and Rachel', image: '', source: 'H&Y 61, Ussher 28-29', period: 'THE PATRIARCHAL AGE' },
+                    { year: -1745, date: '1745 BC', title: 'Birth of Joseph', reference: 'Genesis 30', description: 'Joseph, God\'s eventual instrument in relocating and preserving his people in Egypt, is born to Jacob and Rachel.', image: 'https://gospelexposition.com/wp-content/uploads/2020/06/img_20200616_081317.jpg', source: 'H&Y 62, Ussher 34, AiG "Bible Timeline"', period: 'ISRAEL IN EGYPT' },
+                    { year: -1728, date: '1728 BC', title: 'Joseph Sold into Slavery', reference: 'Genesis 37', description: 'Joseph\'s brothers sell him into slavery after becoming envious of the favoritism shown him by Jacob', image: 'https://aish.com/wp-content/uploads/2009/05/07-Joseph-730x411-1.jpg', source: 'H&Y 63, Ussher 37, AiG "Bible Timeline"', theme: 'Expansion of Sin', period: 'ISRAEL IN EGYPT', theology: "Jealousy and hatred within the covenant family ultimately lead to human trafficking. Joseph's brothers sell him to Midianite traders, threatening to destroy the very family line through which God promised to bless the world. The sin stems from Jacob's favoritism, a generational sin pattern from Isaac, and envy of Joseph's dreams and special coat. They compound their sin with deception, dipping Joseph's coat in goat's blood and allowing Jacob to believe his son was killed by wild animals. Sin has now corrupted the covenant family to the point of potential murder and slavery.\n\nYet later Joseph declares, \"you meant it for evil, but God meant it for good,\" revealing God's sovereign ability to use even heinous sin for His redemptive purposes. God orchestrates everything so that Joseph's slavery and imprisonment lead to his elevation as Egypt's second-in-command, which places him in a position to save the covenant family from famine. This demonstrates that sin's expansion, no matter how severe, cannot thwart God's covenant faithfulness. God's providence is so complete that He uses the very sins meant to destroy His purposes as the means by which He accomplishes them." },
+                    { year: -1715, date: '1715 BC', title: 'Joseph Interprets Pharaoh\'s Dream', reference: 'Genesis 39-41', description: 'Joseph wins favor with Pharaoh and is promoted to second in command by interpreting his dreams.', image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.thetorah.com%2Farticle%2Fpharaohs-dreams-and-the-mirroring-of-josephs-inner-life&psig=AOvVaw0ow0aAPEp10L2bRSvXbNCt&ust=1759374288333000&source=images&cd=vfe&opi=89978449&ved=0CBYQjRxqFwoTCLjNzpOCgpADFQAAAAAdAAAAABAE', source: 'H&Y 63, Ussher 39', period: 'ISRAEL IN EGYPT' },
+                    { year: -1706, date: '1706 BC', title: 'Jacob\'s Family Enters Egypt', reference: 'Genesis 42-47', description: 'Joseph is reconciled to his family and because of his faithfulness, Jacob\'s descendants are preserved when they enter Egypt.', image: 'https://joelkime.com/wp-content/uploads/2019/11/joseph-restoration.jpg', source: 'H&Y 63, Ussher 41', period: 'ISRAEL IN EGYPT' },
+                    { year: -1571, date: '1571 BC', title: 'Birth of Moses', reference: 'Exodus 2', description: 'Moses is born and hidden in the Nile to preserve his life from the infanticide commanded by Pharaoh.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlqGKF7ibSbooz31nAmSgAm9cG-sQWyELgBA&s', source: 'H&Y 73, Ussher 56', period: 'ISRAEL IN EGYPT' },
+                    { year: -1531, date: '1531 BC', title: 'Moses Kills Egyptian', reference: 'Exodus 2', description: 'Moses reacting to seeing one of his people beaten kills an Egyptian and is forced to flee to Midian.', image: 'https://plainbibleteaching.com/wp-content/uploads/2009/07/moses-kills-egyptian.jpg', source: 'H&Y 75, Ussher 58', period: 'ISRAEL IN EGYPT' },
+                    { year: -1491, date: '1491 BC', title: 'Burning Bush', reference: 'Exodus 3', description: 'Moses encounters God in a burning bush where he is commissioned to lead God\'s people out of Egyptian bondage', image: 'https://home.snu.edu/~hculbert/bush.jpg', source: 'H&Y 75, Ussher 60', period: 'THE EXODUS AND WILDERNESS' },
+                    { year: -1491, date: '1491 BC', title: 'The Passover and Exodus', reference: 'Exodus 12', description: 'After experiencing 9 plagues and stubbornly refusing, God punishes Egypt with the 10th plague, the death of the firstborn, while preserving Israel via the blood on their doorposts establishing the first Passover. Israel is finally released by Pharaoh', image: 'https://static.wixstatic.com/media/00f46b_a62e0bfc142e4fd7a168e2928f7a93b7~mv2.jpg/v1/fill/w_568,h_380,al_c,lg_1,q_80,enc_avif,quality_auto/00f46b_a62e0bfc142e4fd7a168e2928f7a93b7~mv2.jpg', source: 'H&Y 76, Ussher 62, AiG "Bible Timeline"', theme: 'Covenant', period: 'THE EXODUS AND WILDERNESS', theology: "Remembering His covenant with Abraham, Isaac, and Jacob, God acts decisively to redeem His people from bondage. The Passover establishes blood sacrifice as the means of covenant protection from God's judgment as the destroyer \"passes over\" homes marked with lamb's blood. This event becomes the central redemptive act of the Old Testament, referenced throughout Scripture as an example of God's saving power. Through the ten plagues, God systematically demonstrates His supremacy over Egypt's gods.  He reveals Himself again as the only true God worthy of covenant allegiance.\n\nThe exodus reveals the eternally faithfull God who keeps his promises through his covenant name \"I AM WHO I AM\". Israels deliverance from Egypt fulfills God's promise to Abraham that his descendants would come out with great possessions after being enslaved for 400 years. The Passover lamb's blood provides a powerful picture of substitutionary atonement that will find ultimate fulfillment in Christ. This mighty act of redemption becomes the basis for Israel's covenant relationship teaching them that they are to obey God because He first redeemed them." },
+                    { year: -1491, date: '1491 BC', title: 'Mt Sinai', reference: 'Exodus 19-20', description: 'God establishes His covenant with Israel, descending on Mt Sinai in fire and smoke and delivers the Ten Commandments to Moses.', image: 'https://www.bible.ca/archeology/bible-archeology-exodus-mt-sinai-sinai-drawing.jpg', source: 'H&Y 78, Ussher 64', theme: 'Covenant', period: 'THE EXODUS AND WILDERNESS', theology: "The Mosaic Covenant formally sets Israel apart as God's covenant nation, with the declaration \"I will be your God, and you will be my people\" becoming the repeated covenant formula. God gives the Law not as a means of earning salvation but as a commandment for how redeemed people should live in a covenant relationship with their Redeemer, with the Ten Commandments summarizing the required obligations. Exclusive worship of YHWH and loving others. The covenant is ratified with blood, demonstrating its life-and-death seriousness.\n\nHowever, the Law also reveals a crucial problem. Israel is entirely incapable of keeping it perfectly. The golden calf incident occurs even while Moses is receiving the Law, showing the people's persistent tendency toward idolatry. This covenant includes both blessings for obedience and curses for disobedience; however, Israel's ongoing history demonstrates that they cannot maintain covenant faithfulness on their own strength. In this way, the Mosaic Covenant points beyond itself to the need for a better covenant that can transform hearts, not just regulate behavior." },
+                    { year: -1490, date: '1490 BC', title: 'Tabernacle Erected', reference: 'Exodus 25-40', description: 'God provides detailed instructions, from the ark to the altar, for His dwelling place with his people.', image: 'https://www.myjewishlearning.com/wp-content/uploads/2006/03/scinia_wikicommons.jpg', source: 'H&Y 79, Ussher 66', period: 'THE EXODUS AND WILDERNESS' },
+                    { year: -1490, date: '1490 BC', title: 'First Day of Atonement', reference: 'Leviticus 16', description: 'The annual cleansing of Israel\'s sins is established with the high priest entering the Holy of Holies with sacrificial blood.', image: 'https://www.gospelimages.com/images/content/paintings/105/image_the_day_of_atonement_-_gospel_images_normal.jpg', source: 'H&Y 90, ESVSB 228', period: 'THE EXODUS AND WILDERNESS' },
+                    { year: -1452, date: '1452 BC', title: 'Bronze Serpent', reference: 'Numbers 21', description: 'After rebelling against Moses, God sends venomous serpents to plague Israel. Because of Moses\' intercession and God\'s grace, a bronze serpent is provided which saves those who look upon it in faith', image: 'https://joshbenner.org/wp-content/uploads/2018/07/maxresdefault-11.jpg', source: 'H&Y 105, Ussher 74', theme: 'Expansion of Sin', period: 'THE EXODUS AND WILDERNESS', theology: "Israel's repeated rebellion in the wilderness reveals the persistence of sin even among the redeemed. How could people who witnessed the exodus miracles still complain against God and Moses? Their grumbling about food and water shows ingratitude for God's provision and a complete failure to trust God's care. The venomous serpents represent the deadly consequences of sin, bringing physical death as the wages of rebellion. We are reminded that even God's covenant people are not immune to sin's expansion and its fatal consequences.\n\nYet God provides salvation through an unlikely means and a pattern that we see throughout Scripture. Looking in faith at a bronze serpent lifted up on a pole, an odd remedy requiring faith in God's word rather than human logic, as looking at the very image of what caused death brings healing. The bronze serpent ultimately becomes a powerful allusion to Christ. Jesus Himself declares, 'as Moses lifted up the serpent in the wilderness, so must the Son of Man be lifted up.' This reveals how the expansion of sin necessitates a salvation that can only come through faith in the One who became sin for us." },
+                    { year: -1452, date: '1452 BC', title: 'Balaam\'s Prophecy', reference: 'Numbers 23-24', description: 'The sorcerer Balaam, though hired to curse Israel, is only able to bless the covenant nation and curse her adversaries.', image: 'https://www.learnreligions.com/thmb/WYz_hciURAfugfU5ny80Jqr_MBk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/BalaamintheBible-171300653-43bf701fd28844c6a5682acf05b9c83a.jpg', source: 'H&Y 105, Ussher 75', period: 'THE EXODUS AND WILDERNESS' },
+                    { year: -1451, date: '1451 BC', title: 'Prophecy of the Prophet', reference: 'Deuteronomy 18', description: 'Moses promises that God will raise up a prophet like Moses, a messianic reference to the eventual coming of Christ', image: '', source: 'H&Y 118, Ussher 77', period: 'THE CONQUEST AND JUDGES' },
+                    { year: -1451, date: '1451 BC', title: 'Crossing of the Jordan', reference: 'Joshua 3', description: 'Joshua spiritually prepares Israel for the Conquest of Canaan and miraculously leads them across the Jordan on dry ground', image: 'https://bibleteachingnotes.blog/wp-content/uploads/2018/12/Crossing-the-Jordan.png?w=640', source: 'H&Y 128, Ussher 80', period: 'THE CONQUEST AND JUDGES' },
+                    { year: -1451, date: '1451 BC', title: 'Walls of Jericho Fall', reference: 'Joshua 6', description: 'After obeying God and marching around the city for 7 days, the walls of Jericho fall. God saves Rahab the harlot and her family through faith preserving the Messianic lineage.', image: 'https://miro.medium.com/v2/resize:fit:1400/1*Cr2TWK6KkZJjuGRnwK6uKg.jpeg', source: 'H&Y 128, Ussher 80', period: 'THE CONQUEST AND JUDGES' },
+                    { year: -1375, date: '1375-1350 BC', title: 'Period of the Judges Begins', reference: 'Judges 2-3', description: 'After Joshua\'s death, Israel enters a cyclical pattern of apostasy, oppression, and deliverance. Without centralized leadership, everyone does what is right in their own eyes, yet God repeatedly raises up deliverers.', image: '', source: 'H&Y 141, ESVSB 427, AiG Bible Timeline', theme: 'Expansion of Sin', period: 'THE CONQUEST AND JUDGES', theology: "The period of the Judges reveals the tenacious expansion of sin through a devastating cycle. Israel abandons God for idols over and over again, suffers oppression, cries out for help, receives a deliverer, experiences temporary peace, and then repeats the pattern with each generation becoming subsequently worse. The refrain \"In those days there was no king in Israel. Everyone did what was right in his own eyes\" (Jdg 17:6) captures sin as rejection of God's authority, which always leads to chaos, idolatry, and horrific violence. Yet we continue to see God's covenant faithfulness persist as He repeatedly raises up flawed deliverers despite Israel's lack of faith, demonstrating once again that no human leaders can provide lasting salvation from sin. This moral chaos highlights humanity's desperate need for a divine King who can transform hearts permanently, not merely offer temporary military deliverance." },
+                    { year: -1180, date: '1200-1160 BC', title: 'Gideon Defeats Midianites', reference: 'Judges 6-8', description: 'God calls the reluctant Gideon to deliver Israel from seven years of Midianite oppression. Through God\'s strategy of reducing Gideon\'s army to 300 men, He demonstrates that victory comes not by human might but by divine power.', image: '', source: 'H&Y 144-145, ESVSB 439, GotQuestions.org', period: 'THE CONQUEST AND JUDGES' },
+                    { year: -1100, date: '1150-1050 BC', title: 'Samson\'s Judgeship', reference: 'Judges 13-16', description: 'God raises up Samson as a Nazirite judge with supernatural strength to begin delivering Israel from Philistine oppression. Despite his personal failures, God uses him to demonstrate His sovereignty and continuing commitment to His covenant people.', image: 'https://www.outlookmag.org/wp-content/uploads/2023/08/GettyImages-84290084.jpeg', source: 'H&Y 146, ESVSB 451, AiG Bible Timeline', period: 'THE CONQUEST AND JUDGES' },
+                    { year: -1145, date: '1150-1140 BC', title: 'Ruth and Boaz', reference: 'Ruth', description: 'During the period of the Judges, when Israel was without a king and everyone was doing what was right in their own eyes, the Moabite widow Ruth clings to Naomi, marries Boaz and becomes the great grandmother of King David.', image: '', source: 'H&Y 150-157, ESVSB 467', period: 'THE CONQUEST AND JUDGES' },
+                    { year: -1121, date: '1121 BC', title: 'Birth of Samuel', reference: '1 Samuel 1', description: 'Hannah gives birth to Samuel after years of barrenness and fervent prayer. Samuel becomes the last Judge and anoints Israel\'s first two kings.', image: 'https://www.learnreligions.com/thmb/xpimdoCrRq28DdY-VUGBc91CIjQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Hannah-in-the-Bible-GettyImages-171081058-57cd8d493df78c71b62efdda.jpg', source: 'H&Y 163, ESVSB 538', period: 'THE CONQUEST AND JUDGES' },
+                    { year: -1043, date: '1043 BC', title: 'Saul Anointed King', reference: '1 Samuel 10', description: 'After Israel demands a king like the nations, Samuel reluctantly anoints Saul, the people\'s choice who would ultimately be ruled by disobedience.', image: '', source: 'H&Y 164, Ussher 90', period: 'THE UNITED MONARCHY' },
+                    { year: -1024, date: '1024 BC', title: 'David Anointed King', reference: '1 Samuel 16', description: 'After Saul is rejected by God for disobedience, Samuel is sent to Bethlehem where he anoints young David as Israel\'s future King.', image: 'https://www.gospelimages.com/images/content/paintings/121/image_david_anointed_king_normal.jpg', source: 'H&Y 166, Ussher 94', theme: 'Covenant', period: 'THE UNITED MONARCHY', theology: "King David represents a new level of covenant faithfulness in Israel's leadership. He is described in 1 Sam 13:14 as a man after God's own heart who will do all God's will. His Psalms express the full range of his covenant relationship. David understands that true kingship means submission to the One true King, ruling as God's representative rather than an autonomous monarch. He establishes Jerusalem as the political and religious center of that day, bringing the ark into the city, purchasing the land for and planning the building of the temple.\n\nBut we also see that even David sins and sins grievously (adultery with Bathsheba and murder of Uriah). Yet his response reveals a covenant heart as he genuinely repents and accepts God's discipline. His psalms of repentance (especially Psalm 51) become models for how God's people should respond to their sin. We are reminded that David's faithfulness is not perfection but rather his consistent return to his relationship with God when he fails. His life demonstrates that God's covenant includes provision for sin through repentance and sacrifice, pointing toward the need for a descendant who will be perfectly faithful, providing the complete solution for sin." },
+                    { year: -1020, date: '~1020 BC', title: 'David & Goliath', reference: '1 Samuel 17', description: 'A young David defeats the mighty Goliath armed with only a sling and a few stones, showing his faith and demonstrating that the battle belongs to the Lord.', image: 'https://witkowskiblog.com/wp-content/uploads/2019/07/david-and-goliath.jpg', source: 'H&Y 166, ESVSB 564', period: 'THE UNITED MONARCHY' },
+                    { year: -1010, date: '1010 BC', title: 'David Becomes King of All Israel', reference: '2 Samuel 5', description: 'After years of patient waiting and trials, David is crowned king over all twelve tribes. His reign marks the golden age of Israel\'s united monarchy and establishes Jerusalem as the capital.', image: '', source: 'ESVSB 544, GotQuestions.org', period: 'THE UNITED MONARCHY' },
+                    { year: -1004, date: '1004 BC', title: 'Davidic Covenant', reference: '2 Samuel 7', description: 'God promises David that his throne will be established forever through his descendant, a promise that is ultimately fulfilled in Christ the Messiah', image: 'https://i.swncdn.com/media/950w/cms/CCOM/49221-davidic-covenant.630w.tn.jpg', source: 'H&Y 169, Ussher 98', theme: 'Covenant', period: 'THE UNITED MONARCHY', theology: "God makes a covenant with David, promising an eternal throne and kingdom through his descendant, building on the Abrahamic promises but indicating the royal line through which blessing will ultimately come to all nations. Unlike the Mosaic covenant, God pledges to maintain this covenant even when David's descendants sin. 2 Samuel 7:14 and 15 read \"When he commits iniquity, I will discipline him with the rod of men, with the stripes of the sons of men, but my steadfast love will not depart from him,\" requiring a descendant who can reign eternally. This covenant addresses the problem revealed in the book of Judges. That sinful human leadership will never be able to provide lasting righteousness. Instead, a promise is made to give a king from David's line who will build God's house and rule forever. The covenant establishes the framework for messianic expectation throughout the prophets, who clarify that this promised king must be both human (a descendant of David) and divine (reigning eternally), thereby merging royal and redemptive themes to demonstrate that God's ultimate solution to sin involves a perfectly righteous ruler." },
+                    { year: -1017, date: '1017 BC', title: 'David Purchases Temple Land', reference: '2 Samuel 24', description: 'David obeys God in purchasing the threshing floor of Araunah, the site on which Solomon would build the temple', image: '', source: 'H&Y 171, Ussher 101', period: 'THE UNITED MONARCHY' },
+                    { year: -970, date: '970 BC', title: 'Solomon Becomes King', reference: '1 Kings 1-3', description: 'Solomon ascends to the throne after David\'s death, asking God for wisdom rather than riches. God grants him unprecedented wisdom along with wealth and honor, establishing Israel\'s greatest period of prosperity.', image: 'https://www.rainbowtoken.com/wp-content/uploads/2019/02/ask-one-petition-of.jpg', source: 'ESVSB 587, GotQuestions.org', period: 'THE UNITED MONARCHY' },
+                    { year: -1008, date: '1012-1004 BC', title: 'Temple Built and Dedicated', reference: '1 Kings 6-8', description: 'Over the course of 7 years, Solomon constructs a magnificent temple. God\'s glory filling the temple assures the people of Israel that God is dwelling with them', image: 'https://cdn.shopify.com/s/files/1/0246/0382/0104/files/3.png?v=1574319736', source: 'H&Y 180, Ussher 104-106', period: 'THE UNITED MONARCHY' },
+                    { year: -931, date: '975-721 BC', title: 'Kingdom Divided', reference: '1 Kings 12 - 2 Kings 17', description: 'After Solomon\'s death and because of the harsh rule of Rehoboam, Israel is split into 2 kingdoms with Judah, the 2 southern tribes, preserving David\'s line.', image: '', source: 'H&Y 181, Ussher 110, AiG "Bible Timeline"', theme: 'Expansion of Sin', period: 'THE DIVIDED KINGDOM', theology: "Solomon's idolatry in his later years and Rehoboam's harsh policies led to the division of the kingdom, illustrating the enormous destructive power of sin to undermine unity and covenant blessings. The northern kingdom immediately establishes golden calf worship at Dan and Bethel, illustrating how quickly sin can spread when God's ordained worship is abandoned. This idolatry persists through every northern king. None of them follows the Lord faithfully, and this division ultimately weakens both kingdoms, rendering them vulnerable to foreign influence and invasion.\n\nYet God preserves the southern kingdom of Judah 'for the sake of David my servant,' (1 Kings 11:34) maintaining His covenant promises despite human failure. This division ultimately creates the context for the prophetic movement. God sends multiple prophets to call both kingdoms back to covenant faithfulness. The tragedy of the divided kingdom shows us how sin has the power to fracture the things that God has joined together. Each kingdom's subsequent decline illustrates that human political solutions are insufficient to address the fundamental problem of sin." },
+                    { year: -862, date: '875-850 BC', title: 'Elijah\'s Ministry', reference: '1 Kings 17-19; 2 Kings 1-2', description: 'God raises up Elijah as prophet during Israel\'s spiritual crisis under Ahab and Jezebel. His confrontation with the prophets of Baal at Mount Carmel powerfully demonstrates the Lord\'s supremacy and calls Israel back to covenant faithfulness.', image: 'https://comeandreason.com/images/stories/AnsweredByFire_Elijah_RobJoseph_1500.jpg', source: 'ESVSB 615, AiG Bible Timeline', period: 'THE DIVIDED KINGDOM' },
+                    { year: -825, date: '850-800 BC', title: 'Elisha\'s Ministry', reference: '2 Kings 2-13', description: 'Elisha receives a double portion of Elijah\'s spirit and performs numerous miracles. His ministry demonstrates God\'s continuing grace to both Israel and surrounding nations, even during periods of apostasy.', image: '', source: 'ESVSB 645, GotQuestions.org', period: 'THE DIVIDED KINGDOM' },
+                    { year: -755, date: '760-750 BC', title: 'Amos and Hosea Prophesy', reference: 'Amos; Hosea', description: 'Amos condemns Israel\'s social injustice while Hosea illustrates God\'s enduring love through his marriage to an unfaithful wife. Both warn of coming judgment while promising future restoration for a faithful remnant.', image: '', source: 'ESVSB 1517-1537, AiG Bible Timeline', period: 'THE DIVIDED KINGDOM' },
+                    { year: -710, date: '740-680 BC', title: 'Isaiah\'s Prophetic Ministry', reference: 'Isaiah', description: 'Isaiah prophesies during Judah\'s political turmoil, offering both judgment and hope. His messianic prophecies provide the clearest Old Testament portrait of the coming Servant-King who will suffer for His people\'s salvation.', image: 'https://ichef.bbci.co.uk/images/ic/640x360/p01l9k2j.jpg', source: 'H&Y 293 - 311, ESVSB 1147, GotQuestions.org', theme: 'Covenant', period: 'THE DIVIDED KINGDOM', theology: "Isaiah confronts Judah's unfaithfulness while proclaiming God's ultimate faithfulness through the promise of future restoration. His vision of God's holiness (chapter 6) reveals the infinite gap between God's requirements and Israel's sinful condition. Even the prophet himself cries, \"Woe is me! For I am lost!\" (6:5). Yet Isaiah prophesies a servant who will bear the curses Israel deserves (chapter 53), being \"pierced for our transgressions\" and \"crushed for our iniquities.\" This suffering servant will ultimately establish a new covenant reality through His suffering.\n\nThe promise of Emmanuel, \"God with us,\" points to the ultimate fulfillment of the covenant formula. God will dwell with His people, not just in a temple but in human flesh. Isaiah envisions a new covenant era characterized by universal knowledge of God, the transformation of nature itself, and the nations flocking to Zion. His prophecies reveal that this new covenant will ultimately be fulfilled not through Israel's obedience but through God's intervention. The suffering servant will be the covenant in the flesh, becoming \"a covenant for the people, a light for the nations.\" (42:6)" },
+                    { year: -722, date: '722 BC', title: 'Fall of Northern Kingdom', reference: '2 Kings 17', description: 'Assyria conquers Samaria, ending the Northern Kingdom of Israel. The ten tribes are scattered in exile, fulfilling the prophetic warnings of covenant judgment for persistent idolatry and injustice.', image: 'https://images.squarespace-cdn.com/content/v1/56c13cc00442627a08632989/1600468817930-V5H7WBV25TL9QFOYPCVP/fallofsamariadonlawrence.jpg', source: 'ESVSB 667, AiG Bible Timeline', theme: 'Expansion of Sin', period: 'THE DIVIDED KINGDOM', theology: "The Northern Kingdom's destruction represents the culmination of two centuries of unrepentant sin, despite numerous prophetic warnings, and fulfills the covenant curses of Deuteronomy 28. The biblical writer in 2 Kings 17 explains how this happened \"because the people of Israel had sinned against the Lord their God, ... and had feared other gods and walked in the customs of the nations whom the Lord drove out before the people of Israel\" (17:7,8), showing that their rebellion had reached its legal limit under the covenant. Yet even this ultimate judgment contains hope, as the future restoration of \"all Israel\" is promised. This demonstrates that no amount of sin can nullify God's ultimate purposes. The exile serves as a warning to the people of Judah. It paradoxically prepares for the gospel's worldwide expansion through the scattering of God's people, showing that while covenant faithfulness requires judging sin, God's redemptive purposes ensure this judgment is not the final word." },
+                    { year: -700, date: '715-686 BC', title: 'Hezekiah\'s Reforms', reference: '2 Kings 18-20', description: 'King Hezekiah leads religious reformation in Judah, restoring temple worship and celebrating Passover. God miraculously delivers Jerusalem from Assyrian siege in response to Hezekiah\'s faith and prayer.', image: '', source: 'ESVSB 669, GotQuestions.org', period: 'THE DIVIDED KINGDOM' },
+                    { year: -624, date: '640-609 BC', title: 'Josiah\'s Reforms', reference: '2 Kings 22-23', description: 'Young King Josiah discovers the Book of the Law and initiates sweeping religious reforms. His passionate return to covenant faithfulness temporarily delays God\'s judgment on Judah.', image: '', source: 'ESVSB 681, AiG Bible Timeline', period: 'THE DIVIDED KINGDOM' },
+                    { year: -603, date: '627-580 BC', title: 'Jeremiah\'s Ministry', reference: 'Jeremiah', description: 'Jeremiah prophesies during Judah\'s final years, warning of Babylonian conquest while promising a New Covenant. Known as the weeping prophet, he endures persecution while faithfully proclaiming God\'s word of both judgment and hope.', image: 'https://www.myjewishlearning.com/wp-content/uploads/2020/06/Michelangelo_profeti_Jeremiah_02-1364x900.jpg', source: 'ESVSB 1259, GotQuestions.org', theme: 'Covenant', period: 'THE DIVIDED KINGDOM', theology: "Jeremiah announces both the failure of the old covenant and God's promise of a radically New Covenant (31:31-34). In doing so, he declares that the old Mosaic covenant has been broken beyond repair due to a heart problem that external law has no power to fix. The New Covenant will address the root of sin by transforming people internally. Jeremiah 31:3 says, \"I will put my law within them, and I will write it on their hearts. And I will be their God, and they shall be my people.\" We also see in this new covenant a promise of complete forgiveness (\"I will remember their sin no more\") and universal knowledge of God. This represents the climax of Old Testament covenant theology. God will unilaterally accomplish what the Mosaic covenant required but couldn't achieve, acknowledging that only internal transformation, not the law, can create lasting faithfulness. Jeremiah's prophecy creates an intense messianic expectation about how God will accomplish this heart transformation, with the answer awaiting the One who will establish the New Covenant by His blood." },
+                    { year: -605, date: '605 BC', title: 'Daniel Taken to Babylon', reference: 'Daniel 1', description: 'Daniel and other young nobles are taken captive in Nebuchadnezzar\'s first deportation. Their faithfulness in exile demonstrates God\'s sovereignty over nations and His preservation of His people.', image: 'https://i0.wp.com/bereansearching.com/wp-content/uploads/2023/05/image-1.png?ssl=1', source: 'ESVSB 1455, AiG Bible Timeline', period: 'THE EXILE AND RETURN' },
+                    { year: -597, date: '597 BC', title: 'Second Deportation to Babylon', reference: '2 Kings 24', description: 'Nebuchadnezzar besieges Jerusalem again, deporting King Jehoiachin and thousands more, including Ezekiel. This partial judgment warns of complete destruction if Judah doesn\'t repent.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM59_6a39KEpNvXg4oD9Jy2QvwfftjCrlQnQ&s', source: 'ESVSB 685, H&Y 339, GotQuestions.org', period: 'THE EXILE AND RETURN' },
+                    { year: -582, date: '593-571 BC', title: 'Ezekiel\'s Prophetic Ministry', reference: 'Ezekiel', description: 'Ezekiel prophesies to the exiles in Babylon through dramatic visions and symbolic actions. He proclaims judgment while promising spiritual renewal and the return of God\'s glory to a restored temple.', image: '', source: 'ESVSB 1373, AiG Bible Timeline', period: 'THE EXILE AND RETURN' },
+                    { year: -586, date: '586 BC', title: 'Babylonian Captivity Begins', reference: '2 Kings 25', description: 'Because of Israel\'s continued disobedience and centuries of covenant unfaithfulness, God allows the destruction of Jerusalem and the temple by Nebuchadnezzar, preserving the Davidic line by carrying Judah into exile.', image: '', source: 'H&Y 185, ESVSB 707', theme: 'Expansion of Sin', period: 'THE EXILE AND RETURN', theology: "The exile represents the earthly consequence of sin under the Old Covenant through the loss of land, temple, king, and national identity. Centuries of covenant-breaking idolatry, despite repeated patient warnings, have resulted in God's judgment. The temple's destruction is particularly devastating, symbolizing the end of God's dwelling among His people. Sin has effectively reversed the exodus, resulting in God's people finding themselves once again in foreign bondage, seemingly abandoned by their covenant God.\n\nYet God uses the exile as a sort of crucible for Israel's theological refinement. Both Ezekiel and Daniel, prophets during the exile, maintain hope based on God's promises to Abraham and David. They recognize that God's covenant faithfulness transcends geographical and political boundaries. He remains their God even in Babylon. The exile serves to purge idolatry from the Jewish people and creates the dispersion of God's people that will ultimately facilitate the spread of the Gospel. We see once again that even God's judgment serves redemptive purposes, preserving a remnant who will return with renewed commitment to His word." },
+                    { year: -539, date: '539 BC', title: 'Fall of Babylon', reference: 'Daniel 5', description: 'Cyrus the Persian conquers Babylon in fulfillment of Isaiah\'s prophecy. This transfer of power sets the stage for Israel\'s return, demonstrating God\'s sovereign control over world empires.', image: 'https://upload.wikimedia.org/wikipedia/commons/5/50/The_fall_of_Babylon%3B_Cyrus_the_Great_defeating_the_Chaldean_Wellcome_V0034440.jpg', source: 'ESVSB 1469, GotQuestions.org', period: 'THE EXILE AND RETURN' },
+                    { year: -537, date: '538-536 BC', title: 'Captivity Ends', reference: 'Ezra 1', description: 'As prophesied by Jeremiah, after 70 years of captivity, the heart of Cyrus, the king of Persia, is stirred by God causing him to allow Israel to return to Jerusalem and rebuild the temple', image: '', source: 'H&Y 205-206, ESVSB 761', theme: 'Covenant', period: 'THE EXILE AND RETURN', theology: "Israel's return from exile powerfully demonstrates God's faithfulness to His promises despite Israel's complete and total failure to remain faithful to the covenant. Jeremiah's prophecy of 70 years is fulfilled precisely, and Isaiah's naming of Cyrus 150 years in advance shows God's sovereign control over history. Though Israel broke the Mosaic covenant, God remains faithful to His unconditional covenants with Abraham and David. The return is explicitly connected to God \"remembering\" His covenant despite the exile.\n\nHowever, as is often the case when humans are involved, the return is partial and imperfect. Only a remnant returns; there is no Davidic king on the throne, the new temple is nowhere near as glorious as Solomon's, and Israel continues to struggle with sin. This incomplete restoration evokes a profound longing for the greater fulfillment promised by the prophets. The post-exilic community realizes that physical return to the land is insufficient. What they need is the spiritual transformation promised in the New Covenant. The tension between their present reality and prophetic promise drives messianic expectation to its highest point." },
+                    { year: -519, date: '520-518 BC', title: 'Haggai and Zechariah Prophesy', reference: 'Haggai; Zechariah 1-8', description: 'When temple rebuilding stalls, God sends Haggai and Zechariah to encourage the returned exiles. Their prophecies motivate completion while pointing to future messianic glory.', image: 'https://images.squarespace-cdn.com/content/v1/5c11664445776e697a897a84/1546534449593-DAGWQW3BZATUVT4DN8U5/haggi.jpeg', source: 'ESVSB 1585-1603, AiG Bible Timeline', period: 'THE EXILE AND RETURN' },
+                    { year: -515, date: '515 BC', title: 'Restoration of The Temple', reference: 'Ezra 3-6', description: 'With the prophetic encouragement of Haggai and Zechariah, Zerubbabel leads the completion of rebuilding the temple', image: '', source: 'H&Y 206-207, ESVSB 763', theme: 'Covenant', period: 'THE EXILE AND RETURN', theology: "The rebuilt temple restores covenant worship, but older people weep because it lacks the glory of  Solomon's temple. God's presence returns, but without the visible glory, representing both restoration and incompleteness. The temple's appearance contrasts sharply with prophetic visions of future glory, where the prophet Haggai had promised \"The latter glory of this house shall be greater than the former,\" which reveals a crucial truth. External religious restoration without internal spiritual transformation cannot fulfill God's covenant purposes. The problem of sin cannot be solved by the restored sacrificial system. The temple stands as a sort of placeholder pointing beyond itself to the true temple the Messiah would one day establish. It maintains covenant worship while awaiting the One who would say, \"Destroy this temple, and in three days I will raise it up.\" (John 2:19)" },
+                    { year: -478, date: '483-473 BC', title: 'God Preserves Israel Through Esther', reference: 'Esther', description: 'With Haman plotting to annihilate the Jews, God sovereignly positions and uses Esther "for such a time as this" to preserve Israel and establishes the feast of Purim', image: 'https://www.agapebiblestudy.com/images/esther_study.jpg', source: 'H&Y 221-230, ESVSB 777', period: 'THE EXILE AND RETURN' },
+                    { year: -458, date: '458 BC', title: 'Ezra Returns to Jerusalem', reference: 'Ezra 7-10', description: 'Ezra the scribe leads a second return from exile, bringing spiritual renewal through teaching God\'s law. His reforms address intermarriage and restore proper worship, emphasizing covenant faithfulness.', image: '', source: 'ESVSB 771, GotQuestions.org', period: 'THE EXILE AND RETURN' },
+                    { year: -445, date: '445 BC', title: 'Nehemiah Rebuilds Jerusalem\'s Walls', reference: 'Nehemiah', description: 'Nehemiah returns as governor to rebuild Jerusalem\'s walls despite fierce opposition. His leadership combines practical action with prayer, restoring both physical security and spiritual commitment through covenant renewal.', image: 'https://regehrlein.wordpress.com/wp-content/uploads/2018/06/nehemiah.jpg', source: 'ESVSB 783, AiG Bible Timeline', period: 'THE EXILE AND RETURN' },
+                    { year: -432, date: '435-430 BC', title: 'Malachi\'s Prophecy', reference: 'Malachi', description: 'Malachi delivers God\'s final Old Testament word, confronting spiritual apathy and promising the coming of Elijah before the great day of the Lord. His prophecy bridges to the New Testament\'s fulfillment in John the Baptist and Christ.', image: '', source: 'ESVSB 1599, GotQuestions.org', theme: 'Covenant', period: 'THE EXILE AND RETURN', theology: "Malachi confronts post-exilic covenant unfaithfulness, including blemished, corrupt priests and rampant divorce, showing that the very sins that led to exile have returned despite judgment and restoration. This again proves conclusively that external reforms cannot change hearts. Yet Malachi promises that \"the Lord whom you seek will suddenly come to his temple\" preceded by a messenger who will \"prepare the way\" (3:1), bringing both purification for the faithful and judgment for the wicked. The Old Testament closes with an unresolved tension and a curse threatening destruction unless hearts are changed, emphasizing humanity's desperate need for the type of transformation only God can provide. Four hundred years of silence will follow until heaven breaks in with the true Messiah and mediator of the New Covenant, Jesus Christ." },
+                    { year: -415, date: '430-400 BC', title: 'Close of Old Testament Canon', reference: 'Malachi 4', description: 'The Old Testament period concludes with Malachi\'s prophecy. Four hundred years of prophetic silence will follow until John the Baptist appears, preparing the way for the promised Messiah.', image: 'https://www.baptistmessage.com/wp-content/uploads/2016/12/Prophet-Malachi.jpg', source: 'ESVSB 1607, AiG Bible Timeline', period: 'THE EXILE AND RETURN' }
                 ]
             },
             methods: {
+                getCardStyle(event, index) {
+                    if (!event.period || !this.periodConfig[event.period]) {
+                        return {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            borderColor: '#ccc',
+                            '--card-border-color': '#ccc'
+                        };
+                    }
+
+                    const config = this.periodConfig[event.period];
+
+                    return {
+                        backgroundColor: config.color,
+                        borderColor: config.border,
+                        '--card-border-color': config.border
+                    };
+                },
                 getSpacingClass(index) {
                     if (index >= this.events.length - 1) return 'spacing-normal';
-                    
+
                     const current = this.events[index];
                     const next = this.events[index + 1];
                     const yearDiff = Math.abs(current.year - next.year);
-                    
+
                     // Same year or within 1 year - very tight
                     if (yearDiff <= 1) return 'spacing-tight';
-                    
+
                     // Within 10 years - close
                     if (yearDiff < 10) return 'spacing-close';
-                    
+
                     // Within 50 years - normal
                     if (yearDiff < 50) return 'spacing-normal';
-                    
+
                     // Within 200 years - medium
                     if (yearDiff < 200) return 'spacing-medium';
-                    
+
                     // Over 200 years - large (but capped for huge gaps)
                     return 'spacing-large';
                 },
